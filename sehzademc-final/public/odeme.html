@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme - TekYıldızMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            background: linear-gradient(rgba(10, 20, 28, 0.9), rgba(10, 20, 28, 0.97)),
+                        url('arkaplan.png') center/cover no-repeat fixed;
+            color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
+        }
+        .card {
+            background: rgba(15, 23, 36, 0.95); border: 2px solid #ffaa00; border-radius: 20px;
+            padding: 40px; max-width: 540px; width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        }
+        .card h2 { font-size: 24px; font-weight: 900; margin-bottom: 6px; text-align: center; }
+        .card > p.alt-baslik { color:#9ca3af; font-size:14px; text-align:center; margin-bottom: 22px; }
+
+        .paket-ozet { background: #0b1118; border: 1px solid rgba(255,170,0,0.3); border-radius: 12px; padding: 18px; margin-bottom: 22px; }
+        .paket-ozet div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .paket-ozet div:last-child { margin-bottom: 0; }
+        .paket-ozet div span:first-child { color: #9ca3af; }
+        .paket-ozet div span:last-child { color: #ffaa00; font-weight: 700; }
+
+        .yetersiz-uyari {
+            display: none; background: rgba(239,68,68,0.12); border: 1px solid #ef4444; color: #fecaca;
+            border-radius: 10px; padding: 14px 16px; font-size: 13px; margin-bottom: 20px; font-weight: 600;
+        }
+
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 13px 14px; border: 1px solid #334155; border-radius: 10px;
+            background: #0f172a; color: #fff; font-size: 14px; outline: none; font-family: inherit;
+        }
+        .input-group input:focus, .input-group select:focus { border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2); }
+        .input-group .hint { font-size: 11px; color: #64748b; margin-top: 5px; }
+
+        .bilgi-notu {
+            background: rgba(88,101,242,0.1); border: 1px solid #5865F2; border-radius: 12px;
+            padding: 16px 18px; margin-bottom: 22px; display: flex; gap: 12px; align-items: flex-start;
+        }
+        .bilgi-notu i { color: #7289ff; font-size: 18px; margin-top: 2px; }
+        .bilgi-notu p { color: #cbd5e1; font-size: 13px; line-height: 1.6; }
+        .bilgi-notu b { color: #a5b4fc; }
+
+        .btn-al {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #ffaa00 0%, #e68a00 100%);
+            border: none; color: #0b0e14; font-weight: 900; font-size: 16px; border-radius: 10px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,170,0,0.3);
+        }
+        .btn-al:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,170,0,0.4); }
+        .btn-al:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .btn-geri { display: block; text-align: center; margin-top: 16px; color: #6b7280; text-decoration: none; font-size: 13px; }
+        .btn-geri:hover { color: #ffaa00; }
+
+        .mesaj-alani { margin-top: 16px; font-size: 14px; font-weight: 600; text-align: center; min-height: 20px; }
+
+        /* --- SIPARIS ALINDI GORUNUMU --- */
+        .basari-gorunum { display: none; text-align: center; }
+        .basari-gorunum .check-icon { font-size: 55px; color: #10b981; margin-bottom: 15px; }
+        .basari-gorunum h2 { margin-bottom: 10px; }
+        .basari-gorunum p { color: #cbd5e1; font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+        .basari-gorunum .siparis-detay { background:#0b1118; border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:16px; text-align:left; margin-bottom:20px; font-size:13px; color:#9ca3af; }
+        .basari-gorunum .siparis-detay div { display:flex; justify-content:space-between; margin-bottom:6px; }
+        .basari-gorunum .siparis-detay div:last-child { margin-bottom:0; }
+        .basari-gorunum .siparis-detay span:last-child { color:#e2e8f0; font-weight:700; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- ============== ODEME / SIPARIS FORMU ============== -->
+        <div id="formGorunum">
+            <h2>Rütbe Talebini Tamamla</h2>
+            <p class="alt-baslik">Bilgilerini gir, "Al" butonuna bastığında talebin yetkililere iletilir.</p>
+
+            <div class="paket-ozet">
+                <div><span>Paket</span><span id="paketAdi">-</span></div>
+                <div><span>Fiyat</span><span id="paketFiyat">-</span></div>
+                <div><span>Hesap</span><span id="siparisSahibi">-</span></div>
+                <div><span>Mevcut Bakiyen</span><span id="mevcutBakiye">-</span></div>
+            </div>
+
+            <div class="yetersiz-uyari" id="yetersizUyari">
+                <i class="fa-solid fa-triangle-exclamation"></i> Yetersiz bakiye! Bu rütbeyi almak için yeterli kredin yok.
+            </div>
+
+            <div class="input-group">
+                <label>Oyun İçi Kullanıcı Adın</label>
+                <input type="text" id="oyunIciAd" placeholder="Minecraft kullanıcı adın..." maxlength="16">
+                <div class="hint">Rütbe, sunucuda bu isimle oynayan hesaba tanımlanacak.</div>
+            </div>
+
+            <div class="input-group">
+                <label>Online Olacağın Zaman Aralığı</label>
+                <select id="zamanAraligi">
+                    <option value="" selected disabled>-- Bir zaman aralığı seç --</option>
+                    <option value="15:00 - 17:00 (Cumartesi / Pazar)">15:00 - 17:00 (Cumartesi / Pazar)</option>
+                    <option value="17:45 - 20:00 (Cumartesi / Pazar)">17:45 - 20:00 (Cumartesi / Pazar)</option>
+                </select>
+                <div class="hint">Rütbeler yalnızca hafta sonu, seçtiğin saat aralığında sunucuda online olman durumunda elle teslim edilir.</div>
+            </div>
+
+            <div class="bilgi-notu">
+                <i class="fa-solid fa-circle-info"></i>
+                <p><b>Önemli:</b> Rütbeler yalnızca <b>Cumartesi</b> ve <b>Pazar</b> günleri, yukarıda belirtilen saat aralıklarında sunucuda online olunması durumunda yetkililerimiz tarafından elle verilir. Lütfen seçtiğin saat aralığında sunucuda olmaya özen göster.</p>
+            </div>
+
+            <button class="btn-al" id="btnAl" onclick="siparisiOlustur()">
+                <i class="fa-solid fa-bolt"></i> AL
+            </button>
+            <div class="mesaj-alani" id="formMesaj"></div>
+
+            <a href="/magaza.html" class="btn-geri"><i class="fa-solid fa-arrow-left"></i> Mağazaya Geri Dön</a>
+        </div>
+
+        <!-- ============== BASARI GORUNUMU (siparis olusturulduktan sonra) ============== -->
+        <div class="basari-gorunum" id="basariGorunum">
+            <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>Talebin Alındı!</h2>
+            <p>Yetkililerinize almak istediğiniz rütbe iletildi. Online olduğunuz saatler içinde rütbeniz verilecektir.</p>
+
+            <div class="siparis-detay">
+                <div><span>Paket</span><span id="ozetPaket">-</span></div>
+                <div><span>Oyun İçi Ad</span><span id="ozetAd">-</span></div>
+                <div><span>Zaman Aralığı</span><span id="ozetZaman">-</span></div>
+                <div><span>Durum</span><span style="color:#ffaa00;">Bekliyor</span></div>
+            </div>
+
+            <a href="/profil.html" class="btn-al" style="display:block; text-decoration:none; text-align:center; box-sizing:border-box;">
+                <i class="fa-solid fa-user"></i> Profilime Dön
+            </a>
+            <a href="/magaza.html" class="btn-geri"><i class="fa-solid fa-arrow-left"></i> Mağazaya Geri Dön</a>
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const paket = params.get('paket') || '';
+        let fiyat = parseInt(params.get('fiyat'), 10) || 0;
+
+        document.getElementById('paketAdi').innerText = paket || 'Bilinmeyen Paket';
+        document.getElementById('paketFiyat').innerText = fiyat + ' Kredi';
+
+        let girisYapilmisMi = false;
+
+        // Fiyati sunucudan dogrula (URL'den gelen fiyat sadece gosterim icindir,
+        // gercek fiyat her zaman sunucudaki RUTBE_FIYATLARI tablosundan alinir).
+        fetch('/api/magaza/fiyatlar').then(r => r.json()).then(data => {
+            if (data.basarili && data.veri[paket] !== undefined) {
+                fiyat = data.veri[paket];
+                document.getElementById('paketFiyat').innerText = fiyat + ' Kredi';
+            }
+        });
+
+        fetch('/api/me').then(r => r.json()).then(data => {
+            if (!data.girisYapildi) {
+                window.location.href = '/giris.html';
+                return;
+            }
+            girisYapilmisMi = true;
+            document.getElementById('siparisSahibi').innerText = data.kullanici.kullanici_adi;
+            document.getElementById('oyunIciAd').value = data.kullanici.kullanici_adi;
+
+            fetch('/api/profilim').then(r => r.json()).then(p => {
+                if (p.basarili) {
+                    const bakiye = typeof p.veri.kredi === 'number' ? p.veri.kredi : 0;
+                    document.getElementById('mevcutBakiye').innerText = bakiye + ' Kredi';
+                    if (bakiye < fiyat) {
+                        document.getElementById('yetersizUyari').style.display = 'block';
+                        document.getElementById('btnAl').disabled = true;
+                    }
+                }
+            });
+        });
+
+        function siparisiOlustur() {
+            const oyun_ici_ad = document.getElementById('oyunIciAd').value.trim();
+            const zaman_araligi = document.getElementById('zamanAraligi').value;
+            const mesajDiv = document.getElementById('formMesaj');
+
+            if (!oyun_ici_ad) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen oyun içi kullanıcı adını gir!';
+                return;
+            }
+            if (!zaman_araligi) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen bir zaman aralığı seç!';
+                return;
+            }
+
+            const btn = document.getElementById('btnAl');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+            mesajDiv.innerText = '';
+
+            // Siparis (ve kredi dusumu) SADECE bu an, "Al" butonuna basildiginda olusturulur.
+            fetch('/api/siparis', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paket_adi: paket, oyun_ici_ad, zaman_araligi })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (!data.basarili) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> AL';
+                    mesajDiv.style.color = '#ef4444';
+                    mesajDiv.innerText = data.mesaj || 'Sipariş oluşturulamadı.';
+                    if (typeof data.kredi === 'number') {
+                        document.getElementById('yetersizUyari').style.display = 'block';
+                        btn.disabled = true;
+                    }
+                    return;
+                }
+                document.getElementById('ozetPaket').innerText = paket;
+                document.getElementById('ozetAd').innerText = oyun_ici_ad;
+                document.getElementById('ozetZaman').innerText = zaman_araligi;
+                document.getElementById('formGorunum').style.display = 'none';
+                document.getElementById('basariGorunum').style.display = 'block';
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> AL';
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        }
+    </script>
+</body>
+</html>

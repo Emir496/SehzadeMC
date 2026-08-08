@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - ŞehzadeMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-soft: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+            --border: #e2e8f0;
+            --dark: #0f172a;
+            --danger: #ef4444;
+            --success: #16a34a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 50%, #163528 100%);
+            padding: 18px 20px 70px;
+            position: relative;
+        }
+        .top-bar::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 55px;
+            background: linear-gradient(to top, var(--bg), transparent);
+        }
+        .top-inner {
+            max-width: 480px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .logo {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green); }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: rgba(34,197,94,0.2);
+            border: 1px solid rgba(34,197,94,0.4);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--green);
+            font-size: 15px;
+        }
+        .back-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            padding: 0 20px 50px;
+            margin-top: -35px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .register-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 36px 32px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .card-icon {
+            width: 56px; height: 56px;
+            background: var(--green-soft);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 14px;
+            color: var(--green-dark);
+            font-size: 22px;
+        }
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .card-header p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 7px;
+        }
+        .form-group label i {
+            color: var(--green);
+            margin-right: 4px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 13px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 14.5px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+        }
+        .form-group input::placeholder {
+            color: var(--text-dim);
+        }
+        .hint {
+            font-size: 11.5px;
+            color: var(--text-dim);
+            margin-top: 5px;
+        }
+
+        .btn-register {
+            width: 100%;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px var(--green-glow);
+            margin-top: 8px;
+        }
+        .btn-register:hover {
+            background: var(--green-dark);
+            transform: translateY(-1px);
+        }
+        .btn-register:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .msg {
+            margin-top: 14px;
+            font-size: 13.5px;
+            font-weight: 600;
+            min-height: 20px;
+            text-align: center;
+        }
+        .msg.error { color: var(--danger); }
+        .msg.success { color: var(--success); }
+
+        .card-footer {
+            margin-top: 24px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+        .card-footer a {
+            color: var(--green-dark);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .card-footer a:hover { text-decoration: underline; }
+
+        footer {
+            background: var(--dark);
+            color: #94a3b8;
+            text-align: center;
+            padding: 18px;
+            font-size: 12.5px;
+            margin-top: auto;
+        }
+        footer a { color: var(--green); text-decoration: none; }
+
+        @media (max-width: 420px) {
+            .register-card { padding: 28px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="top-inner">
+            <a href="anasayfa.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+                <div><span>Şehzade</span>MC</div>
+            </a>
+            <a href="anasayfa.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> Anasayfa
+            </a>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="register-card">
+            <div class="card-header">
+                <div class="card-icon"><i class="fa-solid fa-user-plus"></i></div>
+                <h2>Kayıt Ol</h2>
+                <p>Aramıza katıl ve maceraya başla</p>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fa-solid fa-user"></i> Kullanıcı Adı</label>
+                <input type="text" id="kullanici_adi" placeholder="Oyuncu adın..." autocomplete="username" maxlength="16">
+                <div class="hint">3–16 karakter, sadece harf / rakam / alt çizgi</div>
+            </div>
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> Şifre</label>
+                <input type="password" id="sifre" placeholder="••••••••" autocomplete="new-password">
+                <div class="hint">En az 6 karakter</div>
+            </div>
+            <div class="form-group">
+                <label><i class="fa-solid fa-lock"></i> Şifre Tekrar</label>
+                <input type="password" id="sifreTekrar" placeholder="Şifreyi tekrar gir..." autocomplete="new-password">
+                <div class="hint">Aynı şifreyi bir kez daha yaz</div>
+            </div>
+
+            <button class="btn-register" id="btnKayit">
+                <i class="fa-solid fa-user-plus"></i> Kayıt Ol
+            </button>
+
+            <div class="msg" id="mesaj"></div>
+
+            <div class="card-footer">
+                Zaten hesabın var mı? <a href="giris.html">Giriş Yap</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır.
+        · <a href="anasayfa.html">Anasayfa</a>
+    </footer>
+
+    <script>
+        const btn = document.getElementById('btnKayit');
+        const mesajDiv = document.getElementById('mesaj');
+
+        function kayitOl() {
+            const kullanici_adi = document.getElementById('kullanici_adi').value.trim();
+            const sifre = document.getElementById('sifre').value;
+            const sifreTekrar = document.getElementById('sifreTekrar').value;
+
+            if (!kullanici_adi || !sifre || !sifreTekrar) {
+                mesajDiv.className = 'msg error';
+                mesajDiv.innerText = 'Lütfen tüm alanları doldur!';
+                return;
+            }
+            if (kullanici_adi.length < 3 || kullanici_adi.length > 16 || !/^[a-zA-Z0-9_]+$/.test(kullanici_adi)) {
+                mesajDiv.className = 'msg error';
+                mesajDiv.innerText = 'Kullanıcı adı 3-16 karakter, sadece harf/rakam/alt çizgi olmalı!';
+                return;
+            }
+            if (sifre.length < 6) {
+                mesajDiv.className = 'msg error';
+                mesajDiv.innerText = 'Şifre en az 6 karakter olmalı!';
+                return;
+            }
+            if (sifre !== sifreTekrar) {
+                mesajDiv.className = 'msg error';
+                mesajDiv.innerText = 'Şifreler birbiriyle eşleşmiyor!';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Kayıt ediliyor...';
+
+            fetch('/api/kayitol', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ kullanici_adi, sifre })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.basarili) {
+                    mesajDiv.className = 'msg success';
+                    mesajDiv.innerText = data.mesaj;
+                    setTimeout(() => { window.location.href = '/giris.html'; }, 1200);
+                } else {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Kayıt Ol';
+                    mesajDiv.className = 'msg error';
+                    mesajDiv.innerText = data.mesaj;
+                }
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-user-plus"></i> Kayıt Ol';
+                mesajDiv.className = 'msg error';
+                mesajDiv.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        }
+
+        btn.addEventListener('click', kayitOl);
+        document.getElementById('sifreTekrar').addEventListener('keydown', e => {
+            if (e.key === 'Enter') kayitOl();
+        });
+        document.getElementById('sifre').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('sifreTekrar').focus();
+        });
+        document.getElementById('kullanici_adi').addEventListener('keydown', e => {
+            if (e.key === 'Enter') document.getElementById('sifre').focus();
+        });
+    </script>
+</body>
+</html>

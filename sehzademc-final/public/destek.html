@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destek - ŞehzadeMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-soft: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+            --border: #e2e8f0;
+            --dark: #0f172a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── TOP BAR ── */
+        .top-bar {
+            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 50%, #163528 100%);
+            padding: 18px 20px 60px;
+            position: relative;
+        }
+        .top-bar::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50px;
+            background: linear-gradient(to top, var(--bg), transparent);
+        }
+        .top-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green); }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: rgba(34,197,94,0.2);
+            border: 1px solid rgba(34,197,94,0.4);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--green);
+            font-size: 15px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .nav-links a.active {
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 4px 14px var(--green-glow);
+        }
+
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            max-width: 560px;
+            width: 100%;
+            margin: -30px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .page-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* ── CARD ── */
+        .support-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 7px;
+        }
+        .form-group label i {
+            color: var(--green);
+            margin-right: 4px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 14.5px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+        }
+        .form-group input[readonly] {
+            opacity: 0.7;
+            cursor: not-allowed;
+            background: #eef1f5;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--green);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px var(--green-glow);
+            margin-top: 6px;
+        }
+        .btn-submit:hover {
+            background: var(--green-dark);
+            transform: translateY(-1px);
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .dc-box {
+            text-align: center;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+        .dc-box a {
+            color: #5865F2;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .dc-box a:hover { text-decoration: underline; }
+
+        /* ── SUCCESS STATE ── */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 20px 10px;
+        }
+        .success-box .icon {
+            width: 64px; height: 64px;
+            background: var(--green-soft);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--green-dark);
+            font-size: 28px;
+        }
+        .success-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .success-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .success-box a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--green);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .success-box a:hover { background: var(--green-dark); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px;
+            font-size: 12.5px;
+            margin-top: auto;
+        }
+        footer a { color: var(--green); text-decoration: none; }
+
+        @media (max-width: 500px) {
+            .nav-links a span { display: none; }
+            .support-card { padding: 24px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="top-inner">
+            <a href="anasayfa.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+                <div><span>Şehzade</span>MC</div>
+            </a>
+            <div class="nav-links">
+                <a href="anasayfa.html"><i class="fa-solid fa-house"></i> <span>Anasayfa</span></a>
+                <a href="destek.html" class="active"><i class="fa-solid fa-headset"></i> <span>Destek</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-header">
+            <h1>Destek Talebi</h1>
+            <p>Bir sorunun mu var? Yetkililerimize bildir, en kısa sürede dönüş yapalım.</p>
+        </div>
+
+        <div class="support-card">
+            <!-- Form -->
+            <form id="destekForm" onsubmit="handleSupport(event)">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-user"></i> Oyuncu Adın</label>
+                    <input type="text" id="oyuncuAdi" placeholder="Minecraft nickin..." required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-tag"></i> Konu</label>
+                    <input type="text" id="konu" placeholder="Örn: Ödeme sorunu, Oyun içi bug..." required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-comment-dots"></i> Mesajın</label>
+                    <textarea id="mesaj" placeholder="Sorununu detaylıca açıkla..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <i class="fa-solid fa-paper-plane"></i> Talebi Gönder
+                </button>
+            </form>
+
+            <!-- Success -->
+            <div class="success-box" id="successBox">
+                <div class="icon"><i class="fa-solid fa-circle-check"></i></div>
+                <h3>Talebin Alındı!</h3>
+                <p>Destek talebin başarıyla gönderildi. Yetkililerimiz en kısa sürede incelenecek.</p>
+                <a href="anasayfa.html"><i class="fa-solid fa-house"></i> Anasayfaya Dön</a>
+            </div>
+
+            <div class="dc-box" id="dcBox">
+                Daha hızlı yanıt için
+                <a href="https://discord.gg/rHGeyW3bw" target="_blank">Discord sunucumuza</a>
+                gelebilirsin!
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır.
+        · <a href="anasayfa.html">Anasayfa</a>
+    </footer>
+
+    <script>
+        // Giriş yapmışsa oyuncu adını otomatik doldur
+        fetch('/api/me')
+            .then(r => r.json())
+            .then(data => {
+                if (data.girisYapildi) {
+                    const alan = document.getElementById('oyuncuAdi');
+                    alan.value = data.kullanici.kullanici_adi;
+                    alan.readOnly = true;
+                }
+            })
+            .catch(() => {});
+
+        function handleSupport(e) {
+            e.preventDefault();
+            const oyuncu_adi = document.getElementById('oyuncuAdi').value.trim();
+            const konu = document.getElementById('konu').value.trim();
+            const mesaj = document.getElementById('mesaj').value.trim();
+
+            if (!oyuncu_adi || !konu || !mesaj) {
+                alert('Lütfen tüm alanları doldur!');
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gönderiliyor...';
+
+            fetch('/api/destek', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ oyuncu_adi, konu, mesaj })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.basarili) {
+                    document.getElementById('destekForm').style.display = 'none';
+                    document.getElementById('dcBox').style.display = 'none';
+                    document.getElementById('successBox').style.display = 'block';
+                } else {
+                    alert(data.mesaj || 'Talep gönderilemedi.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Talebi Gönder';
+                }
+            })
+            .catch(() => {
+                alert('Sunucuya bağlanılamadı!');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Talebi Gönder';
+            });
+        }
+    </script>
+</body>
+</html>

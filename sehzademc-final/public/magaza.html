@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mağaza - ŞehzadeMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-soft: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --dark: #0f172a;
+            --gold: #d4af37;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .top-bar {
+            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 50%, #163528 100%);
+            padding: 18px 20px 70px;
+            position: relative;
+        }
+        .top-bar::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 55px;
+            background: linear-gradient(to top, var(--bg), transparent);
+        }
+        .top-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; z-index: 2; flex-wrap: wrap; gap: 12px;
+        }
+        .logo {
+            font-size: 1.35rem; font-weight: 800; color: #fff;
+            text-decoration: none; display: flex; align-items: center; gap: 10px;
+        }
+        .logo span { color: var(--green); }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            color: var(--green); font-size: 15px;
+        }
+        .top-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .kredi-badge {
+            display: none; align-items: center; gap: 8px;
+            background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4);
+            color: #86efac; padding: 8px 16px; border-radius: 40px; font-weight: 700; font-size: 14px;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; font-size: 13.5px;
+            padding: 8px 16px; border-radius: 40px; transition: 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .nav-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .nav-link.active { background: var(--green); color: #fff; box-shadow: 0 4px 14px var(--green-glow); }
+
+        .main {
+            flex: 1; max-width: 1100px; width: 100%;
+            margin: -30px auto 50px; padding: 0 20px; position: relative; z-index: 5;
+        }
+        .page-header { text-align: center; margin-bottom: 24px; }
+        .page-header.left { text-align: left; }
+        .page-header h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+        .page-header p { font-size: 14px; color: var(--text-muted); }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--card); border: 1px solid var(--border); color: var(--text-muted);
+            padding: 9px 16px; border-radius: 12px; font-family: inherit;
+            font-weight: 600; font-size: 13px; cursor: pointer; margin-bottom: 20px; transition: 0.2s;
+        }
+        .back-btn:hover { border-color: var(--green); color: var(--green-dark); }
+
+        .kategori-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;
+        }
+        .kategori-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+            padding: 28px; display: flex; flex-direction: column; transition: 0.2s;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+        .kategori-card:hover {
+            border-color: rgba(34,197,94,0.4);
+            box-shadow: 0 8px 28px rgba(34,197,94,0.12);
+            transform: translateY(-4px);
+        }
+        .kategori-icon { font-size: 36px; margin-bottom: 14px; }
+        .kategori-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+        .kategori-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; flex: 1; margin-bottom: 20px; }
+        .kategori-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 16px; border-top: 1px solid var(--border);
+        }
+        .kategori-footer .label {
+            color: var(--green-dark); font-weight: 700; font-size: 12.5px; text-transform: uppercase;
+        }
+        .btn-incele, .btn-sec {
+            background: var(--green); color: #fff; border: none;
+            padding: 9px 18px; border-radius: 10px; font-weight: 700;
+            font-size: 13px; font-family: inherit; cursor: pointer; transition: 0.2s;
+            box-shadow: 0 4px 12px var(--green-glow);
+        }
+        .btn-incele:hover, .btn-sec:hover { background: var(--green-dark); }
+
+        .mod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        @media (max-width: 900px) { .mod-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 500px) { .mod-grid { grid-template-columns: 1fr; } }
+        .mod-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 22px; display: flex; flex-direction: column; transition: 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        .mod-card:hover {
+            border-color: rgba(34,197,94,0.4);
+            box-shadow: 0 8px 24px rgba(34,197,94,0.1);
+            transform: translateY(-3px);
+        }
+        .mod-icon { font-size: 28px; margin-bottom: 12px; }
+        .mod-card h3 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+        .mod-card p { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; flex: 1; margin-bottom: 14px; }
+        .mod-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding-top: 14px; border-top: 1px solid var(--border);
+        }
+        .mod-footer .label { color: var(--green-dark); font-weight: 700; font-size: 11.5px; text-transform: uppercase; }
+
+        .vip-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+        .vip-card {
+            background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; display: flex; flex-direction: column; transition: 0.2s;
+            position: relative; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+        .vip-card:hover { border-color: rgba(34,197,94,0.4); transform: translateY(-3px); }
+        .vip-card.featured {
+            border-color: rgba(212,175,55,0.5);
+            background: linear-gradient(180deg, #fff 0%, #fffdf5 100%);
+        }
+        .vip-card.featured::after {
+            content: 'POPÜLER'; position: absolute; top: 12px; right: -28px;
+            background: var(--gold); color: #0f172a; font-size: 9px; font-weight: 800;
+            padding: 4px 30px; transform: rotate(45deg);
+        }
+        .vip-icon {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; margin-bottom: 14px;
+        }
+        .vip-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+        .vip-tag {
+            display: inline-block; font-size: 11px; font-weight: 700;
+            padding: 3px 10px; border-radius: 20px; margin-bottom: 12px;
+        }
+        .vip-features { list-style: none; flex: 1; margin-bottom: 16px; }
+        .vip-features li {
+            font-size: 13px; color: var(--text-muted); padding: 5px 0;
+            display: flex; gap: 8px; border-bottom: 1px solid rgba(0,0,0,0.04);
+        }
+        .vip-features li:last-child { border-bottom: none; }
+        .vip-features li i { color: var(--green); font-size: 11px; margin-top: 3px; }
+        .vip-features li strong { color: var(--text); }
+        .vip-price {
+            font-size: 1.4rem; font-weight: 800; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .vip-price i { color: #f59e0b; font-size: 1rem; }
+        .btn-buy {
+            width: 100%; background: var(--green); color: #fff; border: none;
+            padding: 12px; border-radius: 12px; font-weight: 700; font-size: 14px;
+            font-family: inherit; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 14px var(--green-glow);
+        }
+        .btn-buy:hover { background: var(--green-dark); }
+        .vip-card.featured .btn-buy {
+            background: linear-gradient(135deg, var(--gold), #b8860b); color: #0f172a;
+        }
+
+        /* ── KREDİ SEÇİCİ ── */
+        .kredi-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 480px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .kredi-birim {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-size: 13px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 40px;
+            margin-bottom: 22px;
+        }
+        .kredi-panel label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 8px;
+        }
+        .kredi-input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .kredi-input-row input {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: inherit;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .kredi-input-row input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+        }
+        .kredi-step {
+            width: 44px; height: 44px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.15s;
+        }
+        .kredi-step:hover {
+            border-color: var(--green);
+            color: var(--green-dark);
+            background: var(--green-soft);
+        }
+        .hizli-secimler {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+        .hizli-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .hizli-btn:hover, .hizli-btn.active {
+            background: var(--green-soft);
+            border-color: var(--green);
+            color: var(--green-dark);
+        }
+        .odeme-ozet {
+            background: var(--bg);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+        .odeme-satir {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--text-muted);
+            padding: 6px 0;
+        }
+        .odeme-satir.toplam {
+            border-top: 1px solid var(--border);
+            margin-top: 8px;
+            padding-top: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+        }
+        .odeme-satir.toplam span:last-child {
+            color: var(--green-dark);
+        }
+
+        .mod-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--green-soft); border: 1px solid rgba(34,197,94,0.3);
+            color: var(--green-dark); padding: 6px 14px; border-radius: 40px;
+            font-weight: 700; font-size: 13px; margin-bottom: 20px;
+        }
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        footer {
+            background: var(--dark); color: #94a3b8; text-align: center;
+            padding: 18px; font-size: 12.5px; margin-top: auto;
+        }
+        footer a { color: var(--green); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="top-inner">
+            <a href="anasayfa.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+                <div><span>Şehzade</span>MC</div>
+            </a>
+            <div class="top-right">
+                <span class="kredi-badge" id="krediGosterge">
+                    <i class="fa-solid fa-coins"></i> <span id="krediMiktari">0</span> Kredi
+                </span>
+                <a href="anasayfa.html" class="nav-link"><i class="fa-solid fa-house"></i> Anasayfa</a>
+                <a href="magaza.html" class="nav-link active"><i class="fa-solid fa-cart-shopping"></i> Mağaza</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <!-- Kategoriler -->
+        <div class="view active" id="view-kategoriler">
+            <div class="page-header">
+                <h1>Mağaza Kategorileri</h1>
+                <p>İhtiyacın olan kategoriyi seç.</p>
+            </div>
+            <div class="kategori-grid">
+                <div class="kategori-card">
+                    <div class="kategori-icon">💰</div>
+                    <h3>Krediler</h3>
+                    <p>İstediğin kadar kredi al. Tanesi 0,40 TL.</p>
+                    <div class="kategori-footer">
+                        <span class="label">Paketleri Gör</span>
+                        <button type="button" class="btn-incele" onclick="goView('krediler')">İncele</button>
+                    </div>
+                </div>
+                <div class="kategori-card">
+                    <div class="kategori-icon">👑</div>
+                    <h3>Üyelikler (VIP)</h3>
+                    <p>Oyun moduna özel GOLD-VIP, Sponsor, Şehzade ve Şehzade+.</p>
+                    <div class="kategori-footer">
+                        <span class="label">Modları Gör</span>
+                        <button type="button" class="btn-incele" onclick="goView('modlar')">İncele</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Oyun modları -->
+        <div class="view" id="view-modlar">
+            <button type="button" class="back-btn" onclick="goView('kategoriler')"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+            <div class="page-header left">
+                <h1>Oyun Modu Üyelikleri</h1>
+                <p>VIP almak istediğin oyun modunu seç.</p>
+            </div>
+            <div class="mod-grid" id="modGrid"></div>
+        </div>
+
+        <!-- VIP paketleri -->
+        <div class="view" id="view-vip">
+            <button type="button" class="back-btn" onclick="goView('modlar')"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+            <div class="page-header left">
+                <h1>VIP Paketleri</h1>
+                <p>Seçtiğin mod için üyelik paketini seç.</p>
+            </div>
+            <div class="mod-badge" id="seciliModBadge">—</div>
+            <div class="vip-grid">
+                <div class="vip-card">
+                    <div class="vip-icon" style="background:rgba(212,175,55,0.12);color:var(--gold);"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3>GOLD-VIP</h3>
+                    <span class="vip-tag" style="background:rgba(212,175,55,0.12);color:#b8860b;">Başlangıç</span>
+                    <ul class="vip-features">
+                        <li><i class="fa-solid fa-check"></i> Özel <strong>[GOLD-VIP]</strong> tagı</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>/fly</strong> yetkisi</li>
+                        <li><i class="fa-solid fa-check"></i> Günlük GOLD kit</li>
+                        <li><i class="fa-solid fa-check"></i> Öncelikli giriş</li>
+                        <li><i class="fa-solid fa-check"></i> Seçilen modda geçerli</li>
+                    </ul>
+                    <div class="vip-price"><i class="fa-solid fa-coins"></i> 150 Kredi</div>
+                    <button type="button" class="btn-buy" onclick="buyItem('GOLD-VIP')"><i class="fa-solid fa-cart-shopping"></i> Satın Al</button>
+                </div>
+                <div class="vip-card">
+                    <div class="vip-icon" style="background:rgba(59,130,246,0.1);color:#3b82f6;"><i class="fa-solid fa-star"></i></div>
+                    <h3>SPONSOR</h3>
+                    <span class="vip-tag" style="background:rgba(59,130,246,0.1);color:#2563eb;">Orta seviye</span>
+                    <ul class="vip-features">
+                        <li><i class="fa-solid fa-check"></i> Özel <strong>[SPONSOR]</strong> tagı</li>
+                        <li><i class="fa-solid fa-check"></i> <strong>/fly</strong> & <strong>/besle</strong></li>
+                        <li><i class="fa-solid fa-check"></i> Sponsor kit</li>
+                        <li><i class="fa-solid fa-check"></i> Ekstra kasa anahtarları</li>
+                        <li><i class="fa-solid fa-check"></i> Seçilen modda geçerli</li>
+                    </ul>
+                    <div class="vip-price"><i class="fa-solid fa-coins"></i> 200 Kredi</div>
+                    <button type="button" class="btn-buy" onclick="buyItem('SPONSOR')"><i class="fa-solid fa-cart-shopping"></i> Satın Al</button>
+                </div>
+                <div class="vip-card featured">
+                    <div class="vip-icon" style="background:var(--green-soft);color:var(--green-dark);"><i class="fa-solid fa-crown"></i></div>
+                    <h3>ŞEHZADE</h3>
+                    <span class="vip-tag" style="background:var(--green-soft);color:var(--green-dark);">Üst seviye</span>
+                    <ul class="vip-features">
+                        <li><i class="fa-solid fa-check"></i> Özel <strong>[ŞEHZADE]</strong> tagı</li>
+                        <li><i class="fa-solid fa-check"></i> /fly · /besle · /canver</li>
+                        <li><i class="fa-solid fa-check"></i> Şehzade özel kit</li>
+                        <li><i class="fa-solid fa-check"></i> Daha fazla anahtar</li>
+                        <li><i class="fa-solid fa-check"></i> Seçilen modda geçerli</li>
+                    </ul>
+                    <div class="vip-price"><i class="fa-solid fa-coins"></i> 300 Kredi</div>
+                    <button type="button" class="btn-buy" onclick="buyItem('SEHZADE')"><i class="fa-solid fa-cart-shopping"></i> Satın Al</button>
+                </div>
+                <div class="vip-card featured">
+                    <div class="vip-icon" style="background:rgba(212,175,55,0.15);color:var(--gold);"><i class="fa-solid fa-gem"></i></div>
+                    <h3>ŞEHZADE+</h3>
+                    <span class="vip-tag" style="background:rgba(212,175,55,0.15);color:#b8860b;">En üst</span>
+                    <ul class="vip-features">
+                        <li><i class="fa-solid fa-check"></i> Özel <strong>[ŞEHZADE+]</strong> tagı</li>
+                        <li><i class="fa-solid fa-check"></i> Tüm Şehzade yetkileri</li>
+                        <li><i class="fa-solid fa-check"></i> En üst kit & anahtarlar</li>
+                        <li><i class="fa-solid fa-check"></i> Özel partikül / efekt</li>
+                        <li><i class="fa-solid fa-check"></i> Seçilen modda geçerli</li>
+                    </ul>
+                    <div class="vip-price"><i class="fa-solid fa-coins"></i> 400 Kredi</div>
+                    <button type="button" class="btn-buy" onclick="buyItem('SEHZADE+')"><i class="fa-solid fa-cart-shopping"></i> Satın Al</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KREDİLER — seçmeli adet, 0.40 TL/adet -->
+        <div class="view" id="view-krediler">
+            <button type="button" class="back-btn" onclick="goView('kategoriler')"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+            <div class="page-header left">
+                <h1>Kredi Yükle</h1>
+                <p>Kaç kredi almak istediğini seç. Anında hesabına yüklenir.</p>
+            </div>
+
+            <div class="kredi-panel">
+                <div class="kredi-birim">
+                    <i class="fa-solid fa-tag"></i> 1 Kredi = 0,40 TL
+                </div>
+
+                <label>Kredi miktarı</label>
+                <div class="kredi-input-row">
+                    <button type="button" class="kredi-step" onclick="krediDegistir(-10)">−</button>
+                    <input type="number" id="krediAdet" value="100" min="10" max="10000" step="10" oninput="krediHesapla()">
+                    <button type="button" class="kredi-step" onclick="krediDegistir(10)">+</button>
+                </div>
+
+                <div class="hizli-secimler">
+                    <button type="button" class="hizli-btn" onclick="krediHizli(50)">50</button>
+                    <button type="button" class="hizli-btn active" onclick="krediHizli(100)">100</button>
+                    <button type="button" class="hizli-btn" onclick="krediHizli(250)">250</button>
+                    <button type="button" class="hizli-btn" onclick="krediHizli(500)">500</button>
+                    <button type="button" class="hizli-btn" onclick="krediHizli(1000)">1000</button>
+                    <button type="button" class="hizli-btn" onclick="krediHizli(2500)">2500</button>
+                </div>
+
+                <div class="odeme-ozet">
+                    <div class="odeme-satir">
+                        <span>Kredi adedi</span>
+                        <span id="ozetAdet">100 kredi</span>
+                    </div>
+                    <div class="odeme-satir">
+                        <span>Birim fiyat</span>
+                        <span>0,40 TL</span>
+                    </div>
+                    <div class="odeme-satir toplam">
+                        <span>Toplam</span>
+                        <span id="ozetToplam">40,00 TL</span>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-buy" onclick="krediSatinAl()">
+                    <i class="fa-solid fa-bolt"></i> Satın Al
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır. · <a href="anasayfa.html">Anasayfa</a>
+    </footer>
+
+    <script>
+        var KREDI_BIRIM_FIYAT = 0.40; // TL
+        var MODLAR = [
+            { id: 'towny', isim: 'TOWNY', icon: '🌲', aciklama: 'Krallık sistemi için özel şehir ve arsa ayrıcalıkları.' },
+            { id: 'smp', isim: 'SMP', icon: '💥', aciklama: 'Klasik ve eğlenceli topluluk hayatta kalma deneyimi.' },
+            { id: 'survival', isim: 'SURVIVAL', icon: '💎', aciklama: 'Zorlu mücadele için özel VIP ayrıcalıkları ve komutlar.' },
+            { id: 'tekblock', isim: 'TEKBLOCK', icon: '🌿', aciklama: 'Tek blok üzerinde adanı büyüt ve geliş.' },
+            { id: 'boxpvp', isim: 'BOXPVP', icon: '🎯', aciklama: 'Hızlı savaş arenasında ekstra rütbe ve eşyalar.' },
+            { id: 'skyblock', isim: 'SKYBLOCK', icon: '🏝️', aciklama: 'Gökyüzü adalarında ekstra ada boyutu ve özel kitler.' },
+            { id: 'practice', isim: 'PRACTICE', icon: '⚔️', aciklama: 'Reflekslerini geliştir ve düellolara katıl.' },
+            { id: 'minerp', isim: 'MİNERP', icon: '🚀', aciklama: 'Özel maden katları ve hızlı kazım ayrıcalıkları.' },
+            { id: 'skypvp', isim: 'SKYPVP', icon: '🪂', aciklama: 'Adalar arasında amansız savaş ve özel kitler.' },
+            { id: '2b2t', isim: '2B2T', icon: '🏆', aciklama: 'Hiçbir kuralın olmadığı en sert hayatta kalma modu.' }
+        ];
+        var PAKET_FIYATLARI = { 'GOLD-VIP': 150, 'SPONSOR': 200, 'SEHZADE': 300, 'SEHZADE+': 400 };
+        var mevcutKredi = 0;
+        var girisYapilmisMi = false;
+        var seciliMod = null;
+
+        document.getElementById('modGrid').innerHTML = MODLAR.map(function(m) {
+            return '<div class="mod-card">' +
+                '<div class="mod-icon">' + m.icon + '</div>' +
+                '<h3>' + m.isim + '</h3>' +
+                '<p>' + m.aciklama + '</p>' +
+                '<div class="mod-footer">' +
+                '<span class="label">VIP Paketleri</span>' +
+                '<button type="button" class="btn-sec" onclick="modSec(\'' + m.id + '\')">Seç</button>' +
+                '</div></div>';
+        }).join('');
+
+        function goView(name) {
+            var views = document.querySelectorAll('.view');
+            for (var i = 0; i < views.length; i++) views[i].classList.remove('active');
+            var el = document.getElementById('view-' + name);
+            if (el) el.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function modSec(modId) {
+            for (var i = 0; i < MODLAR.length; i++) {
+                if (MODLAR[i].id === modId) { seciliMod = MODLAR[i]; break; }
+            }
+            if (seciliMod) {
+                document.getElementById('seciliModBadge').innerHTML = seciliMod.icon + ' ' + seciliMod.isim;
+            }
+            goView('vip');
+        }
+
+        // ── Kredi hesaplama ──
+        function krediHesapla() {
+            var input = document.getElementById('krediAdet');
+            var adet = parseInt(input.value, 10) || 0;
+            if (adet < 10) adet = 10;
+            if (adet > 10000) adet = 10000;
+            input.value = adet;
+
+            var toplam = adet * KREDI_BIRIM_FIYAT;
+            document.getElementById('ozetAdet').innerText = adet + ' kredi';
+            document.getElementById('ozetToplam').innerText = toplam.toFixed(2).replace('.', ',') + ' TL';
+
+            // Hızlı buton aktifliği
+            var btns = document.querySelectorAll('.hizli-btn');
+            for (var i = 0; i < btns.length; i++) {
+                var val = parseInt(btns[i].innerText, 10);
+                btns[i].classList.toggle('active', val === adet);
+            }
+        }
+
+        function krediDegistir(delta) {
+            var input = document.getElementById('krediAdet');
+            var adet = (parseInt(input.value, 10) || 0) + delta;
+            input.value = adet;
+            krediHesapla();
+        }
+
+        function krediHizli(adet) {
+            document.getElementById('krediAdet').value = adet;
+            krediHesapla();
+        }
+
+        function krediSatinAl() {
+            if (!girisYapilmisMi) {
+                alert('Kredi yüklemek için önce giriş yapmalısın!');
+                window.location.href = '/giris.html';
+                return;
+            }
+            var adet = parseInt(document.getElementById('krediAdet').value, 10) || 0;
+            if (adet < 10) {
+                alert('En az 10 kredi alabilirsin.');
+                return;
+            }
+            var toplam = (adet * KREDI_BIRIM_FIYAT).toFixed(2);
+            // Ödeme sayfasına yönlendir (ileride gerçek ödeme entegrasyonu)
+            if (confirm(adet + ' kredi için ' + toplam.replace('.', ',') + ' TL ödeyeceksin. Devam edilsin mi?')) {
+                window.location.href = '/kredi-odeme.html?adet=' + adet + '&tutar=' + toplam;
+                // Ödeme sayfası yoksa şimdilik:
+                // alert(adet + ' kredi (' + toplam.replace('.', ',') + ' TL) siparişi alındı. Discord üzerinden ödeme bilgisini ileteceğiz.');
+            }
+        }
+
+        // İlk hesaplama
+        krediHesapla();
+
+        function bakiyeYukle() {
+            fetch('/api/me').then(function(res) { return res.json(); }).then(function(data) {
+                girisYapilmisMi = data.girisYapildi;
+                if (!data.girisYapildi) return null;
+                return fetch('/api/profilim').then(function(r) { return r.json(); });
+            }).then(function(p) {
+                if (p && p.basarili) {
+                    mevcutKredi = typeof p.veri.kredi === 'number' ? p.veri.kredi : 0;
+                    document.getElementById('krediGosterge').style.display = 'inline-flex';
+                    document.getElementById('krediMiktari').innerText = mevcutKredi;
+                }
+            }).catch(function() {});
+        }
+
+        fetch('/api/magaza/fiyatlar').then(function(r) { return r.json(); }).then(function(data) {
+            if (data.basarili && data.veri) {
+                for (var k in data.veri) PAKET_FIYATLARI[k] = data.veri[k];
+            }
+        }).catch(function() {}).finally(bakiyeYukle);
+
+        function buyItem(itemName) {
+            if (!girisYapilmisMi) {
+                alert('Paket satın alabilmek için önce giriş yapmalısın!');
+                window.location.href = '/giris.html';
+                return;
+            }
+            var fiyat = PAKET_FIYATLARI[itemName] || 0;
+            if (mevcutKredi < fiyat) {
+                alert('Yetersiz bakiye! Bu üyelik için ' + fiyat + ' kredi gerekiyor.\nMevcut bakiyen: ' + mevcutKredi + ' kredi.');
+                return;
+            }
+            var modParam = seciliMod ? '&mod=' + encodeURIComponent(seciliMod.id) : '';
+            window.location.href = '/odeme.html?paket=' + encodeURIComponent(itemName) + '&fiyat=' + encodeURIComponent(fiyat) + modParam;
+        }
+    </script>
+</body>
+</html>

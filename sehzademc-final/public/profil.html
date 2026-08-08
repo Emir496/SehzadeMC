@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TekYıldızMC - Oyuncu Paneli</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/skinview3d/bundles/skinview3d.bundle.js" defer></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+        body {
+            background-color: #080a0f;
+            background-image:
+                radial-gradient(circle at 50% 30%, rgba(30, 20, 60, 0.6) 0%, rgba(8, 10, 15, 0.95) 70%),
+                url('arkaplan.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #d1d5db; min-height: 100vh; padding-bottom: 40px;
+        }
+
+        .navbar {
+            background: rgba(11, 15, 23, 0.85); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 170, 0, 0.15);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 5%; position: sticky; top: 0; z-index: 100;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 900; color: #ffaa00; letter-spacing: 1px; text-shadow: 0 0 12px rgba(255, 170, 0, 0.4); }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { color: #9ca3af; text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; }
+        .nav-links a:hover, .nav-links a.active { color: #ffaa00; }
+        .nav-user { display: flex; align-items: center; gap: 12px; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 14px; border-radius: 30px; }
+        .nav-user img { width: 32px; height: 32px; border-radius: 6px; image-rendering: pixelated; }
+
+        .container { max-width: 1350px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+        .card { background: rgba(13, 17, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .profile-hero { display: flex; gap: 20px; align-items: center; border: 1px solid rgba(255, 170, 0, 0.2); }
+        .avatar-box { width: 100px; height: 100px; background: #000; border-radius: 12px; border: 2px solid #ffaa00; overflow: hidden; box-shadow: 0 0 15px rgba(255, 170, 0, 0.3); }
+        .avatar-box img { width: 100%; height: 100%; image-rendering: pixelated; }
+        .user-details h2 { color: #fff; font-size: 24px; display: flex; align-items: center; gap: 8px; }
+        .badge { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3); padding: 3px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-top: 6px; display: inline-block; }
+        .kayit-tarihi { font-size: 11px; color: #6b7280; margin-top: 8px; }
+
+        .quick-access { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-top: 20px; }
+        .quick-btn.admin-btn { border-color: rgba(239,68,68,0.4); }
+        .quick-btn.admin-btn i { color: #ef4444; }
+        .quick-btn.admin-btn:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; }
+        .quick-btn { background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px 10px; text-align: center; color: #9ca3af; text-decoration: none; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer; display: block; }
+        .quick-btn i { font-size: 20px; color: #ffaa00; display: block; margin-bottom: 8px; }
+        .quick-btn:hover { background: rgba(255, 170, 0, 0.1); border-color: #ffaa00; color: #fff; }
+
+        .btn-join { width: 100%; background: linear-gradient(90deg, #ffaa00, #e68a00); border: none; padding: 12px; border-radius: 8px; color: #000; font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 14px; }
+        .status-line { font-size: 12px; margin-top: 10px; font-weight: 700; }
+        .shop-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+
+        /* HESAP SİL MODAL */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        .modal-box { background: #121824; border: 1px solid #ef4444; border-radius: 16px; padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); }
+        .modal-box h3 { color: #ef4444; margin-bottom: 10px; font-size: 20px; }
+        .modal-box p { color: #cbd5e1; font-size: 14px; margin-bottom: 15px; }
+        .modal-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #334155; border-radius: 8px; background: #0b0e14; color: #fff; }
+        .modal-msg { font-size: 13px; font-weight: 600; margin-bottom: 10px; min-height: 18px; }
+        .modal-btns { display: flex; gap: 15px; justify-content: center; }
+        .btn-yes { background: #ef4444; color: #fff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .btn-no { background: #334155; color: #fff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><i class="fa-solid fa-star"></i> TEKYILDIZMC</div>
+        <ul class="nav-links">
+            <li><a href="/anasayfa.html">ANA SAYFA</a></li>
+            <li><a href="/magaza.html">MAĞAZA</a></li>
+            <li><a href="/siralamalar.html">SIRALAMALAR</a></li>
+            <li><a href="/destek.html">DESTEK</a></li>
+            <li><a href="/profil.html" class="active">PROFİL</a></li>
+        </ul>
+        <div class="nav-user">
+            <img id="navAvatar" src="https://mc-heads.net/avatar/Steve/32" alt="Skin">
+            <span id="navUsername" style="font-size: 13px; font-weight: 700; color: #fff;">Yükleniyor...</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="card profile-hero">
+                <div class="avatar-box" id="avatarBox" style="width:110px; height:110px;">
+                    <img id="heroAvatar" src="https://mc-heads.net/avatar/Steve/100" alt="Avatar">
+                </div>
+                <div class="user-details">
+                    <h2><span id="heroUsername">Yükleniyor...</span> <i class="fa-solid fa-circle-check" style="color: #ffaa00; font-size: 16px;"></i></h2>
+                    <span class="badge" id="rutbeBadge">TekYıldızMC Oyuncusu</span>
+                    <span class="badge" id="puanBadge" style="display:none; margin-left:6px; color:#10b981; border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.1);"></span>
+                    <div class="kayit-tarihi" id="rutbeBitisNotu"></div>
+                    <div class="kayit-tarihi" id="oturumBilgisi">Oturum kontrol ediliyor...</div>
+                </div>
+            </div>
+
+            <div class="quick-access">
+                <a href="/magaza.html" class="quick-btn"><i class="fa-solid fa-shop"></i> MAĞAZA</a>
+                <a href="/destek.html" class="quick-btn"><i class="fa-solid fa-life-ring"></i> DESTEK</a>
+                <div class="quick-btn" onclick="ipKopyala()"><i class="fa-solid fa-server"></i> IP KOPYALA</div>
+                <div class="quick-btn" onclick="sifreModalAc()"><i class="fa-solid fa-key"></i> ŞİFRE DEĞİŞTİR</div>
+                <div class="quick-btn" onclick="adModalAc()"><i class="fa-solid fa-user-pen"></i> KULLANICI ADI</div>
+                <div class="quick-btn" onclick="cikisYap()"><i class="fa-solid fa-right-from-bracket" style="color:#ffaa00;"></i> ÇIKIŞ YAP</div>
+                <div class="quick-btn" onclick="hesapSilModalAc()"><i class="fa-solid fa-user-slash" style="color:#ef4444;"></i> HESABI SİL</div>
+                <a href="/admin.html" class="quick-btn admin-btn" id="adminBtn" style="display:none;"><i class="fa-solid fa-shield-halved"></i> YÖNETİM PANELİ</a>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card" style="margin-bottom: 20px; text-align: center;">
+                <h3 style="color: #fff; font-size: 16px;">SUNUCUYA KATIL</h3>
+                <button class="btn-join" onclick="ipKopyala()"><i class="fa-solid fa-play"></i> IP'Yİ KOPYALA</button>
+                <div style="font-size: 11px; color: #6b7280; margin-top: 8px; font-family: monospace;">tekyildizmc.aternos.me:47034</div>
+                <div class="status-line" id="statusLine">Sunucu durumu kontrol ediliyor...</div>
+            </div>
+
+            <div class="card" id="magaza">
+                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-store" style="color: #ffaa00;"></i> MAĞAZA'DAN ÖNE ÇIKANLAR</h4>
+                <div class="shop-item"><span style="color:#fff;">VIP Rütbesi</span><span style="color:#10b981; font-weight:700;">500 Kredi</span></div>
+                <div class="shop-item"><span style="color:#fff;">VIP+ Rütbesi</span><span style="color:#10b981; font-weight:700;">900 Kredi</span></div>
+                <div class="shop-item"><span style="color:#fff;">MVIP Rütbesi</span><span style="color:#10b981; font-weight:700;">1500 Kredi</span></div>
+                <a href="/magaza.html" style="display:block; text-align:center; margin-top:12px; color:#ffaa00; text-decoration:none; font-size:12px; font-weight:700;">Tüm Mağazayı Gör &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HESAP SİL ONAY PENCERESİ -->
+    <div class="modal-overlay" id="hesapSilModal">
+        <div class="modal-box">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 40px; color: #ef4444; margin-bottom: 15px;"></i>
+            <h3>Hesabını Silmek İstiyor Musun?</h3>
+            <p>Bu işlem geri alınamaz. Onaylamak için şifreni gir:</p>
+            <input type="password" id="silSifre" placeholder="Şifren">
+            <div class="modal-msg" id="silMesaj"></div>
+            <div class="modal-btns">
+                <button class="btn-yes" id="btnEvetSil">EVET, SİL</button>
+                <button class="btn-no" onclick="hesapSilModalKapat()">HAYIR, VAZGEÇ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SIFRE DEGISTIR PENCERESI -->
+    <div class="modal-overlay" id="sifreModal">
+        <div class="modal-box" style="border-color: #ffaa00; box-shadow: 0 0 30px rgba(255,170,0,0.25);">
+            <i class="fa-solid fa-key" style="font-size: 34px; color: #ffaa00; margin-bottom: 15px;"></i>
+            <h3 style="color:#ffaa00;">Şifre Değiştir</h3>
+            <p>Mevcut şifreni ve yeni şifreni gir.</p>
+            <input type="password" id="mevcutSifre" placeholder="Mevcut şifren">
+            <input type="password" id="yeniSifre1" placeholder="Yeni şifre (en az 6 karakter)">
+            <input type="password" id="yeniSifre2" placeholder="Yeni şifre (tekrar)">
+            <div class="modal-msg" id="sifreMesaj"></div>
+            <div class="modal-btns">
+                <button class="btn-yes" id="btnSifreKaydet" style="background:#ffaa00; color:#000;">GÜNCELLE</button>
+                <button class="btn-no" onclick="sifreModalKapat()">KAPAT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KULLANICI ADI DEGISTIR PENCERESI -->
+    <div class="modal-overlay" id="adModal">
+        <div class="modal-box" style="border-color: #ffaa00; box-shadow: 0 0 30px rgba(255,170,0,0.25);">
+            <i class="fa-solid fa-user-pen" style="font-size: 34px; color: #ffaa00; margin-bottom: 15px;"></i>
+            <h3 style="color:#ffaa00;">Kullanıcı Adını Değiştir</h3>
+            <p>Yeni kullanıcı adını ve mevcut şifreni gir (geçmiş destek/sipariş kayıtların da otomatik güncellenir).</p>
+            <input type="text" id="yeniAd" placeholder="Yeni kullanıcı adı (3-16 karakter)" maxlength="16">
+            <input type="password" id="adSifre" placeholder="Mevcut şifren">
+            <div class="modal-msg" id="adMesaj"></div>
+            <div class="modal-btns">
+                <button class="btn-yes" id="btnAdKaydet" style="background:#ffaa00; color:#000;">DEĞİŞTİR</button>
+                <button class="btn-no" onclick="adModalKapat()">KAPAT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ATERNOS_IP = "tekyildizmc.aternos.me";
+        const ATERNOS_PORT = "47034";
+        let aktifKullaniciAdi = null;
+
+        // 3D skin gorunutuleyiciyi, kutuphane yuklendiyse baslatir; yuklenemezse
+        // sessizce mevcut duz avatar resmiyle devam eder (internet olmadan calisan
+        // ortamlarda site kirilmasin diye).
+        function skinGoster(kullaniciAdi) {
+            if (typeof skinview3d === 'undefined') return;
+            try {
+                const box = document.getElementById('avatarBox');
+                box.innerHTML = '<canvas id="skinCanvas"></canvas>';
+                box.style.height = '160px';
+                const viewer = new skinview3d.SkinViewer({
+                    canvas: document.getElementById('skinCanvas'),
+                    width: 110,
+                    height: 160,
+                    skin: `https://mc-heads.net/skin/${kullaniciAdi}`
+                });
+                viewer.autoRotate = true;
+                viewer.autoRotateSpeed = 0.8;
+                if (viewer.controls) viewer.controls.enableZoom = false;
+            } catch (e) {
+                console.error('3D skin görüntüleyici yüklenemedi:', e);
+            }
+        }
+
+        // ---------- OTURUM KONTROLÜ (sunucudan gelen gerçek veri) ----------
+        fetch('/api/me')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.girisYapildi) {
+                    window.location.href = '/giris.html';
+                    return;
+                }
+                const kullaniciAdi = data.kullanici.kullanici_adi;
+                aktifKullaniciAdi = kullaniciAdi;
+                document.getElementById('navUsername').innerText = kullaniciAdi;
+                document.getElementById('heroUsername').innerText = kullaniciAdi;
+                document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${kullaniciAdi}/32`;
+                document.getElementById('heroAvatar').src = `https://mc-heads.net/avatar/${kullaniciAdi}/100`;
+                document.getElementById('oturumBilgisi').innerText = 'Oturum güvenli şekilde açık.';
+                skinGoster(kullaniciAdi);
+
+                if (data.kullanici.rol === 'admin' || data.kullanici.rol === 'moderator') {
+                    document.getElementById('adminBtn').style.display = 'block';
+                    document.getElementById('rutbeBadge').innerText = data.kullanici.rol === 'admin' ? 'Yönetici' : 'Moderatör';
+                }
+                if (data.kullanici.rol !== 'admin') {
+                    fetch('/api/profilim')
+                        .then(r => r.json())
+                        .then(p => {
+                            if (p.basarili) {
+                                const rutbe = p.veri.rutbe;
+                                if (data.kullanici.rol !== 'moderator') {
+                                    document.getElementById('rutbeBadge').innerText = (rutbe && rutbe !== 'Yok') ? rutbe + ' Üyesi' : 'TekYıldızMC Oyuncusu';
+                                }
+                                if (rutbe && rutbe !== 'Yok' && p.veri.rutbe_bitis) {
+                                    document.getElementById('rutbeBitisNotu').innerText =
+                                        'Rütbe bitiş: ' + new Date(p.veri.rutbe_bitis).toLocaleDateString('tr-TR');
+                                }
+                                const puanEl = document.getElementById('puanBadge');
+                                puanEl.style.display = 'inline-block';
+                                puanEl.innerHTML = `<i class="fa-solid fa-coins"></i> ${p.veri.kredi || 0} Kredi`;
+                            }
+                        });
+                }
+            })
+            .catch(() => {
+                window.location.href = '/giris.html';
+            });
+
+        // ---------- IP KOPYALAMA ----------
+        function ipKopyala() {
+            navigator.clipboard.writeText(`${ATERNOS_IP}:${ATERNOS_PORT}`);
+            alert("Sunucu adresi kopyalandı: " + ATERNOS_IP + ":" + ATERNOS_PORT);
+        }
+
+        // ---------- ÇIKIŞ YAP ----------
+        function cikisYap() {
+            fetch('/api/cikis')
+                .then(res => res.json())
+                .then(() => { window.location.href = '/giris.html'; });
+        }
+
+        // ---------- HESAP SİLME MODALI ----------
+        function hesapSilModalAc() {
+            document.getElementById('hesapSilModal').style.display = 'flex';
+        }
+        function hesapSilModalKapat() {
+            document.getElementById('hesapSilModal').style.display = 'none';
+            document.getElementById('silSifre').value = '';
+            document.getElementById('silMesaj').innerText = '';
+        }
+        document.getElementById('btnEvetSil').addEventListener('click', function () {
+            const sifre = document.getElementById('silSifre').value;
+            const silMesaj = document.getElementById('silMesaj');
+            if (!sifre) {
+                silMesaj.style.color = '#ef4444';
+                silMesaj.innerText = 'Lütfen şifreni gir!';
+                return;
+            }
+            fetch('/api/hesapsil', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sifre })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.basarili) {
+                    alert('Hesabınız başarıyla silindi.');
+                    window.location.href = '/kayitol.html';
+                } else {
+                    silMesaj.style.color = '#ef4444';
+                    silMesaj.innerText = data.mesaj;
+                }
+            })
+            .catch(() => {
+                silMesaj.style.color = '#ef4444';
+                silMesaj.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        });
+
+        // ---------- SIFRE DEGISTIR PENCERESI ----------
+        function sifreModalAc() {
+            document.getElementById('sifreModal').style.display = 'flex';
+        }
+        function sifreModalKapat() {
+            document.getElementById('sifreModal').style.display = 'none';
+            document.getElementById('mevcutSifre').value = '';
+            document.getElementById('yeniSifre1').value = '';
+            document.getElementById('yeniSifre2').value = '';
+            document.getElementById('sifreMesaj').innerText = '';
+        }
+        document.getElementById('btnSifreKaydet').addEventListener('click', function () {
+            const eskiSifre = document.getElementById('mevcutSifre').value;
+            const yeniSifre = document.getElementById('yeniSifre1').value;
+            const yeniSifreTekrar = document.getElementById('yeniSifre2').value;
+            const mesajDiv = document.getElementById('sifreMesaj');
+
+            if (!eskiSifre || !yeniSifre) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen tüm alanları doldur!';
+                return;
+            }
+            if (yeniSifre.length < 6) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Yeni şifre en az 6 karakter olmalı!';
+                return;
+            }
+            if (yeniSifre !== yeniSifreTekrar) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Girdiğin iki yeni şifre birbirini tutmuyor!';
+                return;
+            }
+
+            fetch('/api/sifredegistir', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ eskiSifre, yeniSifre })
+            })
+            .then(res => res.json())
+            .then(data => {
+                mesajDiv.style.color = data.basarili ? '#4ecca3' : '#ef4444';
+                mesajDiv.innerText = data.mesaj;
+                if (data.basarili) {
+                    document.getElementById('mevcutSifre').value = '';
+                    document.getElementById('yeniSifre1').value = '';
+                    document.getElementById('yeniSifre2').value = '';
+                }
+            })
+            .catch(() => {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        });
+
+        // ---------- KULLANICI ADI DEGISTIR PENCERESI ----------
+        function adModalAc() {
+            document.getElementById('adModal').style.display = 'flex';
+        }
+        function adModalKapat() {
+            document.getElementById('adModal').style.display = 'none';
+            document.getElementById('yeniAd').value = '';
+            document.getElementById('adSifre').value = '';
+            document.getElementById('adMesaj').innerText = '';
+        }
+        document.getElementById('btnAdKaydet').addEventListener('click', function () {
+            const yeniKullaniciAdi = document.getElementById('yeniAd').value.trim();
+            const sifre = document.getElementById('adSifre').value;
+            const mesajDiv = document.getElementById('adMesaj');
+
+            if (!yeniKullaniciAdi || !sifre) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen tüm alanları doldur!';
+                return;
+            }
+
+            fetch('/api/kullaniciadidegistir', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ yeniKullaniciAdi, sifre })
+            })
+            .then(res => res.json())
+            .then(data => {
+                mesajDiv.style.color = data.basarili ? '#4ecca3' : '#ef4444';
+                mesajDiv.innerText = data.mesaj;
+                if (data.basarili) {
+                    aktifKullaniciAdi = data.yeniKullaniciAdi;
+                    document.getElementById('navUsername').innerText = aktifKullaniciAdi;
+                    document.getElementById('heroUsername').innerText = aktifKullaniciAdi;
+                    document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${aktifKullaniciAdi}/32`;
+                    document.getElementById('heroAvatar').src = `https://mc-heads.net/avatar/${aktifKullaniciAdi}/100`;
+                    skinGoster(aktifKullaniciAdi);
+                    document.getElementById('adSifre').value = '';
+                }
+            })
+            .catch(() => {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        });
+
+        // ---------- ATERNOS CANLI SUNUCU DURUMU ----------
+        async function checkServerStatus() {
+            const statusLine = document.getElementById('statusLine');
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/2/${ATERNOS_IP}:${ATERNOS_PORT}`);
+                const data = await response.json();
+                if (data.online) {
+                    statusLine.innerHTML = `<span style="color:#10b981;">● ÇEVRİMİÇİ</span> — ${data.players ? data.players.online : 0}/${data.players ? data.players.max : '?'} oyuncu`;
+                } else {
+                    statusLine.innerHTML = `<span style="color:#ef4444;">● KAPALI</span> — Aternos sunucusu şu an offline`;
+                }
+            } catch (e) {
+                statusLine.innerHTML = `<span style="color:#6b7280;">Sunucu durumu alınamadı</span>`;
+            }
+        }
+        checkServerStatus();
+        setInterval(checkServerStatus, 30000); // 30 saniyede bir güncelle
+    </script>
+</body>
+</html>

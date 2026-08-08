@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sıralamalar - TekYıldızMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body {
+            background-color: #080a0f;
+            background-image: linear-gradient(rgba(10,20,28,0.85), rgba(10,20,28,0.95)), url('arkaplan.png');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            color: #fff; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        nav {
+            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(11, 17, 24, 0.8); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .logo { font-size: 2rem; font-weight: 900; letter-spacing: 2px; color: #fff; text-decoration: none; }
+        .btn-home { color: #ffaa00; text-decoration: none; font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: 8px; transition: 0.3s; }
+        .btn-home:hover { transform: translateX(-5px); }
+
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; width: 100%; }
+        .title-area { text-align: center; margin-bottom: 35px; }
+        .title-area h1 { font-size: 2.6rem; font-weight: 900; color: #ffaa00; text-shadow: 0 0 15px rgba(255,170,0,0.3); }
+        .title-area p { color: #a0aab8; margin-top: 8px; font-size: 1rem; }
+
+        .siralama-listesi { display: flex; flex-direction: column; gap: 12px; }
+        .siralama-item {
+            background: rgba(15, 23, 36, 0.9); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 18px;
+            transition: 0.2s;
+        }
+        .siralama-item:hover { border-color: #ffaa00; transform: translateX(4px); }
+        .siralama-item.top1 { border-color: #ffd700; background: rgba(255,215,0,0.06); }
+        .siralama-item.top2 { border-color: #c0c0c0; background: rgba(192,192,192,0.06); }
+        .siralama-item.top3 { border-color: #cd7f32; background: rgba(205,127,50,0.06); }
+
+        .sira-no { width: 36px; text-align: center; font-size: 1.3rem; font-weight: 900; color: #6b7280; }
+        .siralama-item.top1 .sira-no { color: #ffd700; }
+        .siralama-item.top2 .sira-no { color: #c0c0c0; }
+        .siralama-item.top3 .sira-no { color: #cd7f32; }
+
+        .avatar { width: 42px; height: 42px; border-radius: 8px; image-rendering: pixelated; border: 2px solid rgba(255,255,255,0.1); }
+        .oyuncu-bilgi { flex: 1; }
+        .oyuncu-bilgi .isim { font-weight: 700; font-size: 1.05rem; }
+        .oyuncu-bilgi .rutbe { font-size: 0.75rem; color: #ffaa00; margin-top: 2px; }
+        .puan-alani { text-align: right; }
+        .puan-alani .puan { font-size: 1.2rem; font-weight: 900; color: #10b981; }
+        .puan-alani .etiket { font-size: 0.7rem; color: #6b7280; text-transform: uppercase; }
+
+        .empty-msg { text-align: center; color: #6b7280; padding: 50px 20px; font-size: 0.95rem; }
+        .bilgi-notu { text-align: center; color: #6b7280; font-size: 0.8rem; margin-top: 25px; }
+
+        footer { text-align: center; padding: 20px; font-size: 0.85rem; color: #6c788a; border-top: 1px solid rgba(255,255,255,0.05); background: #0b1118; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="anasayfa.html" class="logo">TekYıldızMC</a>
+        <a href="anasayfa.html" class="btn-home"><i class="fa-solid fa-arrow-left"></i> Anasayfaya Dön</a>
+    </nav>
+
+    <div class="container">
+        <div class="title-area">
+            <h1><i class="fa-solid fa-trophy"></i> SIRALAMALAR</h1>
+            <p>Sunucumuza en çok destek olan oyuncularımız</p>
+        </div>
+
+        <div class="siralama-listesi" id="siralamaListesi"></div>
+        <div class="empty-msg" id="bosMesaj" style="display:none;">Henüz sıralamada kimse yok. İlk sırayı sen kap!</div>
+
+        <p class="bilgi-notu">Puanlar; mağazadan onaylanan satın alımlara ve yönetici tarafından verilen ödüllere göre hesaplanır.</p>
+    </div>
+
+    <footer>&copy; 2026 TekYıldızMC - Tüm Hakları Saklıdır.</footer>
+
+    <script>
+        fetch('/api/siralama?limit=20')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.basarili || data.veri.length === 0) {
+                    document.getElementById('bosMesaj').style.display = 'block';
+                    return;
+                }
+                const container = document.getElementById('siralamaListesi');
+                container.innerHTML = data.veri.map((oyuncu, index) => {
+                    const sira = index + 1;
+                    const topClass = sira === 1 ? 'top1' : sira === 2 ? 'top2' : sira === 3 ? 'top3' : '';
+                    const rozet = sira === 1 ? '🥇' : sira === 2 ? '🥈' : sira === 3 ? '🥉' : sira;
+                    const rutbeGoster = (oyuncu.rutbe && oyuncu.rutbe !== 'Yok') ? oyuncu.rutbe : 'Oyuncu';
+                    return `
+                        <div class="siralama-item ${topClass}">
+                            <div class="sira-no">${rozet}</div>
+                            <img class="avatar" src="https://mc-heads.net/avatar/${oyuncu.kullanici_adi}/42" alt="skin">
+                            <div class="oyuncu-bilgi">
+                                <div class="isim">${oyuncu.kullanici_adi}</div>
+                                <div class="rutbe">${rutbeGoster}</div>
+                            </div>
+                            <div class="puan-alani">
+                                <div class="puan">${oyuncu.puan}</div>
+                                <div class="etiket">Kredi</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            })
+            .catch(() => {
+                document.getElementById('bosMesaj').style.display = 'block';
+                document.getElementById('bosMesaj').innerText = 'Sıralama yüklenirken bir sorun oluştu.';
+            });
+    </script>
+</body>
+</html>

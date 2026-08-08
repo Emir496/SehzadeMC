@@ -1,0 +1,17 @@
+{
+  "name": "tekyildizmc",
+  "version": "7.0.0",
+  "description": "TekYildizMC BoxPVP web sitesi - MongoDB (Mongoose) tabanli kalici veritabani ve oturum yonetimi, kredi/magaza sistemi, hafta sonu randevulu rutbe teslimati",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "connect-mongo": "^5.1.0",
+    "mongoose": "^8.5.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5"
+  }
+}

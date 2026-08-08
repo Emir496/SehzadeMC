@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ŞehzadeMC - BoxPVP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-soft: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+            --border: #e2e8f0;
+            --dark: #0f172a;
+            --gold: #d4af37;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── HERO WRAPPER ── */
+        .hero-wrap {
+            position: relative;
+            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 40%, #163528 100%);
+            overflow: hidden;
+            padding-bottom: 80px;
+        }
+        .hero-wrap::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 70% 60% at 50% 20%, rgba(34,197,94,0.18), transparent),
+                url('arkaplan.png') center/cover no-repeat;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+        .hero-wrap::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 120px;
+            background: linear-gradient(to top, var(--bg), transparent);
+            pointer-events: none;
+        }
+
+        /* ── TOP NAV ── */
+        .top-nav {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            padding: 22px 20px 0;
+        }
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            padding: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-pill a {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 18px;
+            border-radius: 40px;
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .nav-pill a:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .nav-pill a.active {
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--green-glow);
+        }
+        .nav-pill a i { font-size: 13px; }
+
+        /* ── HERO CONTENT ── */
+        .hero {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+        .hero-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, #1a3a28, #0f2418);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(34,197,94,0.35);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(34,197,94,0.2);
+        }
+        .hero-logo i {
+            font-size: 52px;
+            color: var(--green);
+            filter: drop-shadow(0 0 12px rgba(34,197,94,0.5));
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+        }
+        .hero h1 span { color: var(--green); }
+        .hero-sub {
+            color: rgba(255,255,255,0.65);
+            font-size: 1.05rem;
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+        .btn-online {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34,197,94,0.15);
+            border: 1px solid rgba(34,197,94,0.4);
+            color: #86efac;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: default;
+        }
+        .btn-online .dot {
+            width: 8px; height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(34,197,94,0); }
+        }
+        .btn-auth {
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-login {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+        }
+        .btn-login:hover { background: rgba(255,255,255,0.2); }
+        .btn-register {
+            background: var(--green);
+            border: 1px solid var(--green);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--green-glow);
+        }
+        .btn-register:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+        .nav-user-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 6px 16px 6px 6px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .nav-user-chip:hover { border-color: var(--green); }
+        .nav-user-chip img {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            image-rendering: pixelated;
+        }
+
+        /* ── IP + DISCORD BAR ── */
+        .action-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            margin-top: -10px;
+        }
+        .ip-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .ip-btn:hover {
+            border-color: var(--green);
+            box-shadow: 0 6px 24px rgba(34,197,94,0.15);
+            transform: translateY(-2px);
+        }
+        .ip-btn .ip-icon {
+            width: 36px; height: 36px;
+            background: var(--green-soft);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--green-dark);
+            font-size: 15px;
+        }
+        .ip-btn .ip-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .discord-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #5865F2;
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(88,101,242,0.3);
+        }
+        .discord-btn:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+        }
+        .discord-btn .dc-icon {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+        }
+        .discord-btn .dc-label {
+            font-size: 11px;
+            font-weight: 500;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* ── WIDGETS ── */
+        .widgets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        .widget {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+        .widget h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .widget h4 i { color: var(--green); font-size: 14px; }
+        .status-online { color: var(--green); font-weight: 700; font-size: 15px; }
+        .status-offline { color: #ef4444; font-weight: 700; font-size: 15px; }
+        .status-hint { font-size: 12px; color: var(--text-dim); margin-top: 6px; }
+        .son-kayit-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .son-kayit-item:last-child { border-bottom: none; }
+        .son-kayit-item span:first-child { font-weight: 600; color: var(--text); }
+
+        /* Anket */
+        .anket-secenek { margin-bottom: 8px; }
+        .anket-secenek button {
+            width: 100%;
+            text-align: left;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .anket-secenek button:hover:not(:disabled) { border-color: var(--green); }
+        .anket-secenek button:disabled { cursor: default; opacity: 0.9; }
+        .anket-bar {
+            position: absolute; top: 0; left: 0; height: 100%;
+            background: rgba(34,197,94,0.12); z-index: 0;
+        }
+        .anket-secenek button span { position: relative; z-index: 1; }
+        .anket-oy { float: right; color: var(--green-dark); font-weight: 700; }
+
+        /* ── DUYURULAR / HABERLER ── */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title i { color: var(--green); }
+        .section-title .badge {
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .haber-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .haber-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.2s;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        }
+        .haber-card:hover {
+            border-color: rgba(34,197,94,0.3);
+            box-shadow: 0 8px 28px rgba(34,197,94,0.1);
+            transform: translateY(-3px);
+        }
+        .haber-body { padding: 20px; }
+        .haber-tarih {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .haber-body h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+        .haber-body p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-dim);
+            font-size: 14px;
+            background: var(--card);
+            border: 1px dashed var(--border);
+            border-radius: 16px;
+        }
+
+        /* ── MODAL (giriş gerekli) ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(6px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+            animation: modalIn 0.25s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-box .modal-icon {
+            width: 56px; height: 56px;
+            background: var(--green-soft);
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 16px;
+            color: var(--green-dark);
+            font-size: 24px;
+        }
+        .modal-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .modal-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .modal-actions a, .modal-actions button {
+            padding: 11px 22px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            font-family: inherit;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+        .modal-btn-primary {
+            background: var(--green);
+            color: #fff;
+        }
+        .modal-btn-primary:hover { background: var(--green-dark); }
+        .modal-btn-secondary {
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border) !important;
+        }
+        .modal-btn-secondary:hover { background: var(--border); }
+        .modal-close {
+            margin-top: 14px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 13px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .modal-close:hover { color: var(--text); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            color: #94a3b8;
+            padding: 50px 20px 24px;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1fr 1fr;
+            gap: 32px;
+        }
+        .footer-box h3 {
+            color: #fff;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .footer-box h3 span { color: var(--green); }
+        .footer-box h4 {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 14px;
+        }
+        .footer-box p {
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
+        .footer-box ul { list-style: none; }
+        .footer-box ul li { margin-bottom: 8px; }
+        .footer-box ul li a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13.5px;
+            transition: color 0.2s;
+        }
+        .footer-box ul li a:hover { color: var(--green); }
+        .footer-bottom {
+            max-width: 1100px;
+            margin: 36px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12.5px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 8px;
+        }
+        .footer-social a {
+            width: 34px; height: 34px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+            display: flex; align-items: center; justify-content: center;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+        .footer-social a:hover {
+            background: var(--green);
+            color: #fff;
+        }
+
+        @media (max-width: 800px) {
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+        @media (max-width: 500px) {
+            .footer-inner { grid-template-columns: 1fr; }
+            .nav-pill a { padding: 8px 12px; font-size: 12.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ════════ HERO ════════ -->
+    <div class="hero-wrap">
+        <div class="top-nav">
+            <div class="nav-pill">
+                <a href="anasayfa.html" class="active"><i class="fa-solid fa-house"></i> Anasayfa</a>
+                <a href="#" onclick="return korumaliGit('magaza.html')"><i class="fa-solid fa-cart-shopping"></i> Mağaza</a>
+                <a href="#" onclick="return korumaliGit('kredi.html')"><i class="fa-solid fa-coins"></i> Kredi Yükle</a>
+                <a href="#" onclick="return korumaliGit('siralamalar.html')"><i class="fa-solid fa-trophy"></i> Sıralamalar</a>
+                <a href="#" onclick="return korumaliGit('destek.html')"><i class="fa-solid fa-headset"></i> Destek</a>
+                <a href="#" onclick="return korumaliGit('kurallar.html')"><i class="fa-solid fa-scroll"></i> Kurallar</a>
+            </div>
+        </div>
+
+        <div class="hero">
+            <div class="hero-logo">
+                <i class="fa-solid fa-crown"></i>
+            </div>
+            <h1><span>Şehzade</span>MC</h1>
+            <p class="hero-sub">Türkiye'nin en rekabetçi BoxPVP sunucusu</p>
+
+            <div class="hero-actions" id="authArea">
+                <div class="btn-online">
+                    <span class="dot"></span>
+                    <span id="onlineSayisi">— oyuncu aktif</span>
+                </div>
+                <a href="giris.html" class="btn-auth btn-login">Giriş Yap</a>
+                <a href="kayitol.html" class="btn-auth btn-register">Kayıt Ol</a>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <div class="ip-btn" onclick="copyIP()">
+                <div class="ip-icon"><i class="fa-solid fa-server"></i></div>
+                <div>
+                    <div class="ip-label">Sunucu Adresi</div>
+                    <div id="server-ip">sehzademc.aternos.me</div>
+                </div>
+                <i class="fa-regular fa-copy" style="color:var(--text-dim); margin-left:4px;"></i>
+            </div>
+            <a href="https://discord.gg/rHGeyW3bw" target="_blank" class="discord-btn">
+                <div class="dc-icon"><i class="fa-brands fa-discord"></i></div>
+                <div>
+                    <div class="dc-label">Discord</div>
+                    <div>Oyuna Katıl!</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- ════════ MAIN ════════ -->
+    <div class="main">
+
+        <!-- Widgets -->
+        <div class="widgets">
+            <div class="widget">
+                <h4><i class="fa-solid fa-server"></i> Sunucu Durumu</h4>
+                <div id="canliDurum" class="status-online">Kontrol ediliyor...</div>
+                <div class="status-hint">30 saniyede bir otomatik güncellenir</div>
+            </div>
+            <div class="widget">
+                <h4><i class="fa-solid fa-user-plus"></i> Son Kayıt Olanlar</h4>
+                <div id="sonKatilanlar" style="font-size:13px; color:var(--text-dim);">Yükleniyor...</div>
+            </div>
+            <div class="widget" id="anketWidget" style="display:none;">
+                <h4><i class="fa-solid fa-square-poll-vertical"></i> <span id="anketSoru"></span></h4>
+                <div id="anketSecenekler"></div>
+                <div id="anketNot" style="font-size:12px; color:var(--text-dim); margin-top:8px;"></div>
+            </div>
+        </div>
+
+        <!-- Duyurular (Yönetim panelinden kontrol edilir) -->
+        <div class="section-title">
+            <i class="fa-solid fa-bullhorn"></i> Duyurular
+            <span class="badge">HABERLER</span>
+        </div>
+        <div class="haber-grid" id="duyuruGrid">
+            <div class="empty-state" id="duyuruBos">Henüz duyuru yok. Yönetim panelinden duyuru ekleyebilirsin.</div>
+        </div>
+    </div>
+
+    <!-- ════════ FOOTER ════════ -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-box">
+                <h3><span>Şehzade</span>MC</h3>
+                <p>Oyuncularına kesintisiz, adil ve rekabetçi bir BoxPVP deneyimi sunmayı amaçlayan bir sunucudur. Hemen aramıza katıl!</p>
+                <p style="margin-top:10px; font-size:12.5px;">İletişim: iletisim@sehzademc.com</p>
+            </div>
+            <div class="footer-box">
+                <h4>Hızlı Menü</h4>
+                <ul>
+                    <li><a href="anasayfa.html">Anasayfa</a></li>
+                    <li><a href="#" onclick="return korumaliGit('magaza.html')">Mağaza</a></li>
+                    <li><a href="#" onclick="return korumaliGit('kredi.html')">Kredi Yükle</a></li>
+                    <li><a href="#" onclick="return korumaliGit('destek.html')">Destek</a></li>
+                    <li><a href="#" onclick="return korumaliGit('siralamalar.html')">Sıralamalar</a></li>
+                </ul>
+            </div>
+            <div class="footer-box">
+                <h4>Topluluk</h4>
+                <ul>
+                    <li><a href="https://discord.gg/rHGeyW3bw" target="_blank">Discord</a></li>
+                    <li><a href="#" onclick="return korumaliGit('kurallar.html')">Kurallar</a></li>
+                    <li><a href="giris.html">Giriş Yap</a></li>
+                    <li><a href="kayitol.html">Kayıt Ol</a></li>
+                </ul>
+            </div>
+            <div class="footer-box">
+                <h4>Bağlantı</h4>
+                <p style="margin-bottom:6px;">IP: <strong style="color:#fff;">sehzademc.aternos.me</strong></p>
+                <p>Discord: <strong style="color:#fff;">discord.gg/rHGeyW3bw</strong></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>
+                ŞehzadeMC, Mojang veya Minecraft ile bağlantılı değildir.<br>
+                &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır.
+            </div>
+            <div class="footer-social">
+                <a href="https://discord.gg/rHGeyW3bw" target="_blank" title="Discord"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ════════ GİRİŞ GEREKLİ MODAL ════════ -->
+    <div class="modal-overlay" id="girisModal">
+        <div class="modal-box">
+            <div class="modal-icon"><i class="fa-solid fa-lock"></i></div>
+            <h3>Hesap Gerekli</h3>
+            <p>Bu sayfaya erişmek için önce hesabını oluşturmalı veya giriş yapmalısın.</p>
+            <div class="modal-actions">
+                <a href="kayitol.html" class="modal-btn-primary">Kayıt Ol</a>
+                <a href="giris.html" class="modal-btn-secondary">Giriş Yap</a>
+            </div>
+            <button class="modal-close" onclick="modalKapat()">Vazgeç</button>
+        </div>
+    </div>
+
+    <script>
+        let girisYapildi = false;
+        let hedefSayfa = null;
+
+        // ── Oturum kontrolü ──
+        fetch('/api/me')
+            .then(res => res.json())
+            .then(data => {
+                girisYapildi = !!data.girisYapildi;
+                if (girisYapildi) {
+                    const ad = data.kullanici.kullanici_adi;
+                    document.getElementById('authArea').innerHTML = `
+                        <div class="btn-online">
+                            <span class="dot"></span>
+                            <span id="onlineSayisi">— oyuncu aktif</span>
+                        </div>
+                        <a href="profil.html" class="nav-user-chip">
+                            <img src="https://mc-heads.net/avatar/${ad}/32" alt="skin">
+                            <span>${ad}</span>
+                        </a>
+                    `;
+                    // online sayısını tekrar güncelle
+                    canliDurumGuncelle();
+                }
+            })
+            .catch(() => {});
+
+        // ── Korumalı sayfa yönlendirme ──
+        function korumaliGit(url) {
+            if (girisYapildi) {
+                window.location.href = url;
+                return false;
+            }
+            hedefSayfa = url;
+            document.getElementById('girisModal').classList.add('show');
+            return false;
+        }
+        function modalKapat() {
+            document.getElementById('girisModal').classList.remove('show');
+            hedefSayfa = null;
+        }
+        document.getElementById('girisModal').addEventListener('click', function(e) {
+            if (e.target === this) modalKapat();
+        });
+
+        // ── IP kopyala ──
+        function copyIP() {
+            const ip = document.getElementById('server-ip').innerText;
+            navigator.clipboard.writeText(ip).then(() => {
+                alert('Sunucu IP kopyalandı: ' + ip);
+            });
+        }
+
+        // ── Canlı sunucu durumu ──
+        async function canliDurumGuncelle() {
+            const el = document.getElementById('canliDurum');
+            const onlineEl = document.getElementById('onlineSayisi');
+            try {
+                // IP'ni kendi sunucuna göre güncelle
+                const res = await fetch('https://api.mcsrvstat.us/2/sehzademc.aternos.me');
+                const data = await res.json();
+                if (data.online) {
+                    const online = data.players ? data.players.online : 0;
+                    const max = data.players ? data.players.max : '?';
+                    el.innerHTML = `<span class="status-online">● ÇEVRİMİÇİ</span> — ${online}/${max} oyuncu`;
+                    if (onlineEl) onlineEl.innerText = online + ' oyuncu aktif';
+                } else {
+                    el.innerHTML = `<span class="status-offline">● KAPALI</span> — Sunucu şu an offline`;
+                    if (onlineEl) onlineEl.innerText = '0 oyuncu aktif';
+                }
+            } catch (e) {
+                el.innerHTML = `<span style="color:var(--text-dim);">Sunucu durumu alınamadı</span>`;
+            }
+        }
+        canliDurumGuncelle();
+        setInterval(canliDurumGuncelle, 30000);
+
+        // ── Son kayıtlar ──
+        fetch('/api/son-kayitlar')
+            .then(res => res.json())
+            .then(data => {
+                const el = document.getElementById('sonKatilanlar');
+                if (data.basarili && data.veri.length > 0) {
+                    el.innerHTML = data.veri.map(u => `
+                        <div class="son-kayit-item">
+                            <span>${u.kullanici_adi}</span>
+                            <span>${new Date(u.kayit_tarihi).toLocaleDateString('tr-TR')}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    el.innerText = 'Henüz kayıtlı oyuncu yok.';
+                }
+            })
+            .catch(() => {
+                document.getElementById('sonKatilanlar').innerText = 'Yüklenemedi.';
+            });
+
+        // ── Duyurular (Yönetim panelinden eklenenler) ──
+        fetch('/api/duyurular?limit=6')
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('duyuruGrid');
+                if (data.basarili && data.veri.length > 0) {
+                    document.getElementById('duyuruBos')?.remove();
+                    grid.innerHTML = data.veri.map(d => `
+                        <div class="haber-card">
+                            <div class="haber-body">
+                                <div class="haber-tarih">${new Date(d.yayin_tarihi || d.tarih).toLocaleDateString('tr-TR', { day:'numeric', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' })}</div>
+                                <h3>${d.baslik}</h3>
+                                <p>${d.icerik}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            })
+            .catch(() => {});
+
+        // ── Anket ──
+        function anketiCiz(anket, oyVerdiMi, girisYapildiFlag) {
+            const widget = document.getElementById('anketWidget');
+            if (!anket) { widget.style.display = 'none'; return; }
+            widget.style.display = 'block';
+            document.getElementById('anketSoru').innerText = anket.soru;
+            const toplamOy = anket.secenekler.reduce((t, s) => t + s.oy, 0);
+            document.getElementById('anketSecenekler').innerHTML = anket.secenekler.map(s => {
+                const yuzde = toplamOy > 0 ? Math.round((s.oy / toplamOy) * 100) : 0;
+                const tiklanabilir = (!oyVerdiMi && girisYapildiFlag)
+                    ? `onclick="anketOyVer('${anket.id}',${s.id})"`
+                    : 'disabled';
+                return `
+                    <div class="anket-secenek">
+                        <button ${tiklanabilir}>
+                            <div class="anket-bar" style="width:${yuzde}%;"></div>
+                            <span>${s.metin}</span>
+                            ${(oyVerdiMi || !girisYapildiFlag) ? `<span class="anket-oy">${yuzde}%</span>` : ''}
+                        </button>
+                    </div>`;
+            }).join('');
+            const notEl = document.getElementById('anketNot');
+            if (oyVerdiMi) notEl.innerText = `Oy kullandın — toplam ${toplamOy} oy.`;
+            else if (!girisYapildiFlag) notEl.innerText = `Oy vermek için giriş yap — toplam ${toplamOy} oy.`;
+            else notEl.innerText = `Toplam ${toplamOy} oy — bir seçeneğe tıkla.`;
+        }
+
+        function anketYukle() {
+            fetch('/api/anket/aktif')
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.basarili) return;
+                    fetch('/api/me').then(r => r.json()).then(me => {
+                        anketiCiz(data.anket, data.oyVerdiMi, me.girisYapildi);
+                    });
+                })
+                .catch(() => {});
+        }
+
+        function anketOyVer(anket_id, secenek_id) {
+            fetch('/api/anket/oyla', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ anket_id, secenek_id })
+            }).then(res => res.json()).then(data => {
+                if (!data.basarili) { alert(data.mesaj); return; }
+                anketiCiz(data.anket, true, true);
+            });
+        }
+        anketYukle();
+    </script>
+</body>
+</html>
