@@ -3,362 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kredi Ödeme - ŞehzadeMC</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Ödeme - TekYıldızMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --green: #22c55e;
-            --green-dark: #16a34a;
-            --green-soft: #dcfce7;
-            --green-glow: rgba(34, 197, 94, 0.35);
-            --bg: #f4f6f9;
-            --card: #ffffff;
-            --text: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --dark: #0f172a;
-            --discord: #5865F2;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body {
-            font-family: 'Outfit', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background: linear-gradient(rgba(10, 20, 28, 0.9), rgba(10, 20, 28, 0.97)),
+                        url('arkaplan.png') center/cover no-repeat fixed;
+            color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;
         }
-        .top-bar {
-            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 50%, #163528 100%);
-            padding: 18px 20px 70px;
-            position: relative;
-        }
-        .top-bar::after {
-            content: '';
-            position: absolute; bottom: 0; left: 0; right: 0; height: 55px;
-            background: linear-gradient(to top, var(--bg), transparent);
-        }
-        .top-inner {
-            max-width: 560px; margin: 0 auto;
-            display: flex; justify-content: space-between; align-items: center;
-            position: relative; z-index: 2;
-        }
-        .logo {
-            font-size: 1.35rem; font-weight: 800; color: #fff;
-            text-decoration: none; display: flex; align-items: center; gap: 10px;
-        }
-        .logo span { color: var(--green); }
-        .logo-icon {
-            width: 36px; height: 36px;
-            background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4);
-            border-radius: 10px; display: flex; align-items: center; justify-content: center;
-            color: var(--green); font-size: 15px;
-        }
-        .back-link {
-            color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 600; font-size: 13.5px;
-            padding: 8px 16px; border-radius: 40px; transition: 0.2s;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .back-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-        .main {
-            flex: 1;
-            max-width: 520px;
-            width: 100%;
-            margin: -30px auto 50px;
-            padding: 0 20px;
-            position: relative;
-            z-index: 5;
-        }
-
         .card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px 28px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+            background: rgba(15, 23, 36, 0.95); border: 2px solid #ffaa00; border-radius: 20px;
+            padding: 40px; max-width: 540px; width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+        }
+        .card h2 { font-size: 24px; font-weight: 900; margin-bottom: 6px; text-align: center; }
+        .card > p.alt-baslik { color:#9ca3af; font-size:14px; text-align:center; margin-bottom: 22px; }
+
+        .paket-ozet { background: #0b1118; border: 1px solid rgba(255,170,0,0.3); border-radius: 12px; padding: 18px; margin-bottom: 22px; }
+        .paket-ozet div { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+        .paket-ozet div:last-child { margin-bottom: 0; }
+        .paket-ozet div span:first-child { color: #9ca3af; }
+        .paket-ozet div span:last-child { color: #ffaa00; font-weight: 700; }
+
+        .yetersiz-uyari {
+            display: none; background: rgba(239,68,68,0.12); border: 1px solid #ef4444; color: #fecaca;
+            border-radius: 10px; padding: 14px 16px; font-size: 13px; margin-bottom: 20px; font-weight: 600;
         }
 
-        .card-icon {
-            width: 64px; height: 64px;
-            background: var(--green-soft);
-            border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 18px;
-            color: var(--green-dark);
-            font-size: 28px;
+        .input-group { margin-bottom: 18px; }
+        .input-group label { display: block; font-size: 12px; color: #cbd5e1; margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 13px 14px; border: 1px solid #334155; border-radius: 10px;
+            background: #0f172a; color: #fff; font-size: 14px; outline: none; font-family: inherit;
         }
+        .input-group input:focus, .input-group select:focus { border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2); }
+        .input-group .hint { font-size: 11px; color: #64748b; margin-top: 5px; }
 
-        .card h1 {
-            text-align: center;
-            font-size: 1.45rem;
-            font-weight: 800;
-            margin-bottom: 8px;
+        .bilgi-notu {
+            background: rgba(88,101,242,0.1); border: 1px solid #5865F2; border-radius: 12px;
+            padding: 16px 18px; margin-bottom: 22px; display: flex; gap: 12px; align-items: flex-start;
         }
-        .card > .subtitle {
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            line-height: 1.5;
-        }
+        .bilgi-notu i { color: #7289ff; font-size: 18px; margin-top: 2px; }
+        .bilgi-notu p { color: #cbd5e1; font-size: 13px; line-height: 1.6; }
+        .bilgi-notu b { color: #a5b4fc; }
 
-        .siparis-ozet {
-            background: var(--bg);
-            border-radius: 14px;
-            padding: 16px 18px;
-            margin-bottom: 24px;
+        .btn-al {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #ffaa00 0%, #e68a00 100%);
+            border: none; color: #0b0e14; font-weight: 900; font-size: 16px; border-radius: 10px;
+            cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,170,0,0.3);
         }
-        .siparis-ozet .satir {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: var(--text-muted);
-            padding: 5px 0;
-        }
-        .siparis-ozet .satir strong {
-            color: var(--text);
-            font-weight: 700;
-        }
-        .siparis-ozet .satir.toplam {
-            border-top: 1px solid var(--border);
-            margin-top: 8px;
-            padding-top: 12px;
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--text);
-        }
-        .siparis-ozet .satir.toplam strong {
-            color: var(--green-dark);
-        }
+        .btn-al:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,170,0,0.4); }
+        .btn-al:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        .adimlar {
-            margin-bottom: 24px;
-        }
-        .adimlar h3 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 14px;
-            color: var(--text);
-        }
-        .adim {
-            display: flex;
-            gap: 14px;
-            margin-bottom: 14px;
-            align-items: flex-start;
-        }
-        .adim-no {
-            width: 28px; height: 28px;
-            background: var(--green);
-            color: #fff;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 13px;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
-        .adim-text {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            padding-top: 3px;
-        }
-        .adim-text strong { color: var(--text); }
+        .btn-geri { display: block; text-align: center; margin-top: 16px; color: #6b7280; text-decoration: none; font-size: 13px; }
+        .btn-geri:hover { color: #ffaa00; }
 
-        .ornek-mesaj {
-            background: #f0f4ff;
-            border: 1px dashed #5865F2;
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 22px;
-            font-size: 13.5px;
-            color: #3730a3;
-            line-height: 1.55;
-        }
-        .ornek-mesaj .baslik {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            color: #5865F2;
-            margin-bottom: 6px;
-        }
+        .mesaj-alani { margin-top: 16px; font-size: 14px; font-weight: 600; text-align: center; min-height: 20px; }
 
-        .btn-discord {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-            background: var(--discord);
-            color: #fff;
-            border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            font-family: inherit;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 16px rgba(88,101,242,0.35);
-            margin-bottom: 12px;
-        }
-        .btn-discord:hover {
-            background: #4752c4;
-            transform: translateY(-1px);
-        }
-
-        .btn-magaza {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            background: var(--bg);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            font-family: inherit;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .btn-magaza:hover {
-            border-color: var(--green);
-            color: var(--green-dark);
-        }
-
-        .not {
-            margin-top: 18px;
-            font-size: 12.5px;
-            color: var(--text-muted);
-            text-align: center;
-            line-height: 1.5;
-        }
-
-        footer {
-            background: var(--dark);
-            color: #94a3b8;
-            text-align: center;
-            padding: 18px;
-            font-size: 12.5px;
-            margin-top: auto;
-        }
-        footer a { color: var(--green); text-decoration: none; }
+        /* --- SIPARIS ALINDI GORUNUMU --- */
+        .basari-gorunum { display: none; text-align: center; }
+        .basari-gorunum .check-icon { font-size: 55px; color: #10b981; margin-bottom: 15px; }
+        .basari-gorunum h2 { margin-bottom: 10px; }
+        .basari-gorunum p { color: #cbd5e1; font-size: 14px; line-height: 1.7; margin-bottom: 20px; }
+        .basari-gorunum .siparis-detay { background:#0b1118; border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:16px; text-align:left; margin-bottom:20px; font-size:13px; color:#9ca3af; }
+        .basari-gorunum .siparis-detay div { display:flex; justify-content:space-between; margin-bottom:6px; }
+        .basari-gorunum .siparis-detay div:last-child { margin-bottom:0; }
+        .basari-gorunum .siparis-detay span:last-child { color:#e2e8f0; font-weight:700; }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="top-inner">
-            <a href="anasayfa.html" class="logo">
-                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
-                <div><span>Şehzade</span>MC</div>
+    <div class="card">
+
+        <!-- ============== ODEME / SIPARIS FORMU ============== -->
+        <div id="formGorunum">
+            <h2>Rütbe Talebini Tamamla</h2>
+            <p class="alt-baslik">Bilgilerini gir, "Al" butonuna bastığında talebin yetkililere iletilir.</p>
+
+            <div class="paket-ozet">
+                <div><span>Paket</span><span id="paketAdi">-</span></div>
+                <div><span>Fiyat</span><span id="paketFiyat">-</span></div>
+                <div><span>Hesap</span><span id="siparisSahibi">-</span></div>
+                <div><span>Mevcut Bakiyen</span><span id="mevcutBakiye">-</span></div>
+            </div>
+
+            <div class="yetersiz-uyari" id="yetersizUyari">
+                <i class="fa-solid fa-triangle-exclamation"></i> Yetersiz bakiye! Bu rütbeyi almak için yeterli kredin yok.
+            </div>
+
+            <div class="input-group">
+                <label>Oyun İçi Kullanıcı Adın</label>
+                <input type="text" id="oyunIciAd" placeholder="Minecraft kullanıcı adın..." maxlength="16">
+                <div class="hint">Rütbe, sunucuda bu isimle oynayan hesaba tanımlanacak.</div>
+            </div>
+
+            <div class="input-group">
+                <label>Online Olacağın Zaman Aralığı</label>
+                <select id="zamanAraligi">
+                    <option value="" selected disabled>-- Bir zaman aralığı seç --</option>
+                    <option value="15:00 - 17:00 (Cumartesi / Pazar)">15:00 - 17:00 (Cumartesi / Pazar)</option>
+                    <option value="17:45 - 20:00 (Cumartesi / Pazar)">17:45 - 20:00 (Cumartesi / Pazar)</option>
+                </select>
+                <div class="hint">Rütbeler yalnızca hafta sonu, seçtiğin saat aralığında sunucuda online olman durumunda elle teslim edilir.</div>
+            </div>
+
+            <div class="bilgi-notu">
+                <i class="fa-solid fa-circle-info"></i>
+                <p><b>Önemli:</b> Rütbeler yalnızca <b>Cumartesi</b> ve <b>Pazar</b> günleri, yukarıda belirtilen saat aralıklarında sunucuda online olunması durumunda yetkililerimiz tarafından elle verilir. Lütfen seçtiğin saat aralığında sunucuda olmaya özen göster.</p>
+            </div>
+
+            <button class="btn-al" id="btnAl" onclick="siparisiOlustur()">
+                <i class="fa-solid fa-bolt"></i> AL
+            </button>
+            <div class="mesaj-alani" id="formMesaj"></div>
+
+            <a href="/magaza.html" class="btn-geri"><i class="fa-solid fa-arrow-left"></i> Mağazaya Geri Dön</a>
+        </div>
+
+        <!-- ============== BASARI GORUNUMU (siparis olusturulduktan sonra) ============== -->
+        <div class="basari-gorunum" id="basariGorunum">
+            <div class="check-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2>Talebin Alındı!</h2>
+            <p>Yetkililerinize almak istediğiniz rütbe iletildi. Online olduğunuz saatler içinde rütbeniz verilecektir.</p>
+
+            <div class="siparis-detay">
+                <div><span>Paket</span><span id="ozetPaket">-</span></div>
+                <div><span>Oyun İçi Ad</span><span id="ozetAd">-</span></div>
+                <div><span>Zaman Aralığı</span><span id="ozetZaman">-</span></div>
+                <div><span>Durum</span><span style="color:#ffaa00;">Bekliyor</span></div>
+            </div>
+
+            <a href="/profil.html" class="btn-al" style="display:block; text-decoration:none; text-align:center; box-sizing:border-box;">
+                <i class="fa-solid fa-user"></i> Profilime Dön
             </a>
-            <a href="magaza.html" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Mağaza
-            </a>
+            <a href="/magaza.html" class="btn-geri"><i class="fa-solid fa-arrow-left"></i> Mağazaya Geri Dön</a>
         </div>
     </div>
-
-    <div class="main">
-        <div class="card">
-            <div class="card-icon"><i class="fa-solid fa-coins"></i></div>
-            <h1>Kredi Siparişin Alındı</h1>
-            <p class="subtitle">Ödemeyi tamamlamak için Discord sunucumuza gelip ticket açman gerekiyor.</p>
-
-            <div class="siparis-ozet">
-                <div class="satir">
-                    <span>Kredi adedi</span>
-                    <strong id="ozetAdet">—</strong>
-                </div>
-                <div class="satir">
-                    <span>Birim fiyat</span>
-                    <strong>0,40 TL</strong>
-                </div>
-                <div class="satir toplam">
-                    <span>Ödenecek tutar</span>
-                    <strong id="ozetTutar">—</strong>
-                </div>
-            </div>
-
-            <div class="adimlar">
-                <h3>Nasıl devam edeceksin?</h3>
-                <div class="adim">
-                    <div class="adim-no">1</div>
-                    <div class="adim-text">Aşağıdaki butondan <strong>Discord sunucumuza</strong> katıl.</div>
-                </div>
-                <div class="adim">
-                    <div class="adim-no">2</div>
-                    <div class="adim-text">Sunucuda <strong>ticket / destek</strong> kanalından yeni bir ticket aç.</div>
-                </div>
-                <div class="adim">
-                    <div class="adim-no">3</div>
-                    <div class="adim-text">Yetkiliye kredi almak istediğini yaz; tutarı ve kullanıcı adını belirt.</div>
-                </div>
-                <div class="adim">
-                    <div class="adim-no">4</div>
-                    <div class="adim-text">Ödeme onaylandıktan sonra kredin <strong>hesabına yüklenir</strong>.</div>
-                </div>
-            </div>
-
-            <div class="ornek-mesaj">
-                <div class="baslik">Ticket’ta yazabileceğin örnek mesaj</div>
-                Merhaba, siteden kredi almak istiyorum. Yardımcı olur musunuz?<br>
-                İstediğim miktar: <strong id="ornekAdet">100 kredi</strong><br>
-                Tutar: <strong id="ornekTutar">40,00 TL</strong><br>
-                Kullanıcı adım: <strong id="ornekNick">(giriş yaptıysan otomatik dolar)</strong>
-            </div>
-
-            <a href="https://discord.gg/rHGeyW3bw" target="_blank" class="btn-discord">
-                <i class="fa-brands fa-discord"></i> Discord’a Git & Ticket Aç
-            </a>
-            <a href="magaza.html" class="btn-magaza">
-                <i class="fa-solid fa-store"></i> Mağazaya Dön
-            </a>
-
-            <p class="not">
-                Ödeme Discord üzerinden yetkililerimizle yapılır.<br>
-                Sahte ödeme bildirimi hesabının kapatılmasına yol açabilir.
-            </p>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır.
-        · <a href="anasayfa.html">Anasayfa</a>
-    </footer>
 
     <script>
-        // URL: kredi-odeme.html?adet=100&tutar=40.00
-        var params = new URLSearchParams(window.location.search);
-        var adet = parseInt(params.get('adet'), 10) || 0;
-        var tutar = params.get('tutar') || (adet * 0.40).toFixed(2);
+        const params = new URLSearchParams(window.location.search);
+        const paket = params.get('paket') || '';
+        let fiyat = parseInt(params.get('fiyat'), 10) || 0;
 
-        if (adet < 10) {
-            // Geçersiz giriş → mağazaya yönlendir
-            window.location.href = 'magaza.html';
-        } else {
-            var tutarYazi = parseFloat(tutar).toFixed(2).replace('.', ',') + ' TL';
-            document.getElementById('ozetAdet').innerText = adet + ' kredi';
-            document.getElementById('ozetTutar').innerText = tutarYazi;
-            document.getElementById('ornekAdet').innerText = adet + ' kredi';
-            document.getElementById('ornekTutar').innerText = tutarYazi;
-        }
+        document.getElementById('paketAdi').innerText = paket || 'Bilinmeyen Paket';
+        document.getElementById('paketFiyat').innerText = fiyat + ' Kredi';
 
-        // Giriş yapmışsa nick’i doldur
-        fetch('/api/me')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                if (data.girisYapildi && data.kullanici) {
-                    document.getElementById('ornekNick').innerText = data.kullanici.kullanici_adi;
+        let girisYapilmisMi = false;
+
+        // Fiyati sunucudan dogrula (URL'den gelen fiyat sadece gosterim icindir,
+        // gercek fiyat her zaman sunucudaki RUTBE_FIYATLARI tablosundan alinir).
+        fetch('/api/magaza/fiyatlar').then(r => r.json()).then(data => {
+            if (data.basarili && data.veri[paket] !== undefined) {
+                fiyat = data.veri[paket];
+                document.getElementById('paketFiyat').innerText = fiyat + ' Kredi';
+            }
+        });
+
+        fetch('/api/me').then(r => r.json()).then(data => {
+            if (!data.girisYapildi) {
+                window.location.href = '/giris.html';
+                return;
+            }
+            girisYapilmisMi = true;
+            document.getElementById('siparisSahibi').innerText = data.kullanici.kullanici_adi;
+            document.getElementById('oyunIciAd').value = data.kullanici.kullanici_adi;
+
+            fetch('/api/profilim').then(r => r.json()).then(p => {
+                if (p.basarili) {
+                    const bakiye = typeof p.veri.kredi === 'number' ? p.veri.kredi : 0;
+                    document.getElementById('mevcutBakiye').innerText = bakiye + ' Kredi';
+                    if (bakiye < fiyat) {
+                        document.getElementById('yetersizUyari').style.display = 'block';
+                        document.getElementById('btnAl').disabled = true;
+                    }
                 }
+            });
+        });
+
+        function siparisiOlustur() {
+            const oyun_ici_ad = document.getElementById('oyunIciAd').value.trim();
+            const zaman_araligi = document.getElementById('zamanAraligi').value;
+            const mesajDiv = document.getElementById('formMesaj');
+
+            if (!oyun_ici_ad) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen oyun içi kullanıcı adını gir!';
+                return;
+            }
+            if (!zaman_araligi) {
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Lütfen bir zaman aralığı seç!';
+                return;
+            }
+
+            const btn = document.getElementById('btnAl');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> İşleniyor...';
+            mesajDiv.innerText = '';
+
+            // Siparis (ve kredi dusumu) SADECE bu an, "Al" butonuna basildiginda olusturulur.
+            fetch('/api/siparis', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ paket_adi: paket, oyun_ici_ad, zaman_araligi })
             })
-            .catch(function() {});
+            .then(res => res.json())
+            .then(data => {
+                if (!data.basarili) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-bolt"></i> AL';
+                    mesajDiv.style.color = '#ef4444';
+                    mesajDiv.innerText = data.mesaj || 'Sipariş oluşturulamadı.';
+                    if (typeof data.kredi === 'number') {
+                        document.getElementById('yetersizUyari').style.display = 'block';
+                        btn.disabled = true;
+                    }
+                    return;
+                }
+                document.getElementById('ozetPaket').innerText = paket;
+                document.getElementById('ozetAd').innerText = oyun_ici_ad;
+                document.getElementById('ozetZaman').innerText = zaman_araligi;
+                document.getElementById('formGorunum').style.display = 'none';
+                document.getElementById('basariGorunum').style.display = 'block';
+            })
+            .catch(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-bolt"></i> AL';
+                mesajDiv.style.color = '#ef4444';
+                mesajDiv.innerText = 'Sunucuya bağlanılamadı!';
+            });
+        }
     </script>
 </body>
 </html>
