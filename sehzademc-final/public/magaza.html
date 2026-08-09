@@ -600,7 +600,7 @@
             var toplam = (adet * KREDI_BIRIM_FIYAT).toFixed(2);
             // Ödeme sayfasına yönlendir (ileride gerçek ödeme entegrasyonu)
             if (confirm(adet + ' kredi için ' + toplam.replace('.', ',') + ' TL ödeyeceksin. Devam edilsin mi?')) {
-                window.location.href = '/kredi-odeme.html?adet=' + adet + '&tutar=' + toplam;
+                window.location.href = '/krediodeme.html?adet=' + adet + '&tutar=' + toplam;
                 // Ödeme sayfası yoksa şimdilik:
                 // alert(adet + ' kredi (' + toplam.replace('.', ',') + ' TL) siparişi alındı. Discord üzerinden ödeme bilgisini ileteceğiz.');
             }
