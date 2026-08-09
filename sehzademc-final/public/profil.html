@@ -3,138 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TekYıldızMC - Oyuncu Paneli</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Profil - ŞehzadeMC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/skinview3d/bundles/skinview3d.bundle.js" defer></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        :root {
+            --green: #22c55e;
+            --green-dark: #16a34a;
+            --green-soft: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.35);
+            --bg: #f4f6f9;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
+            --border: #e2e8f0;
+            --dark: #0f172a;
+            --danger: #ef4444;
+            --danger-soft: #fee2e2;
+            --success: #16a34a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: #080a0f;
-            background-image:
-                radial-gradient(circle at 50% 30%, rgba(30, 20, 60, 0.6) 0%, rgba(8, 10, 15, 0.95) 70%),
-                url('arkaplan.png');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: #d1d5db; min-height: 100vh; padding-bottom: 40px;
+            font-family: 'Outfit', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        .navbar {
-            background: rgba(11, 15, 23, 0.85); backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 170, 0, 0.15);
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 12px 5%; position: sticky; top: 0; z-index: 100;
+        /* ── TOP BAR ── */
+        .top-bar {
+            background: linear-gradient(160deg, #0a1f14 0%, #0f2a1c 50%, #163528 100%);
+            padding: 18px 20px 60px;
+            position: relative;
         }
-        .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 900; color: #ffaa00; letter-spacing: 1px; text-shadow: 0 0 12px rgba(255, 170, 0, 0.4); }
-        .nav-links { display: flex; gap: 25px; list-style: none; }
-        .nav-links a { color: #9ca3af; text-decoration: none; font-weight: 600; font-size: 13px; transition: 0.3s; }
-        .nav-links a:hover, .nav-links a.active { color: #ffaa00; }
-        .nav-user { display: flex; align-items: center; gap: 12px; background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); padding: 6px 14px; border-radius: 30px; }
-        .nav-user img { width: 32px; height: 32px; border-radius: 6px; image-rendering: pixelated; }
+        .top-bar::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 50px;
+            background: linear-gradient(to top, var(--bg), transparent);
+        }
+        .top-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo span { color: var(--green); }
+        .logo-icon {
+            width: 36px; height: 36px;
+            background: rgba(34,197,94,0.2);
+            border: 1px solid rgba(34,197,94,0.4);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--green);
+            font-size: 15px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            padding: 8px 16px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        .nav-links a.active {
+            background: var(--green);
+            color: #fff;
+            box-shadow: 0 4px 14px var(--green-glow);
+        }
+        .nav-user {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 5px 14px 5px 5px;
+            border-radius: 30px;
+        }
+        .nav-user img { width: 30px; height: 30px; border-radius: 7px; image-rendering: pixelated; }
+        .nav-user span { color: #fff; font-size: 13px; font-weight: 700; }
 
-        .container { max-width: 1350px; margin: 25px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
-        .card { background: rgba(13, 17, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            max-width: 1100px;
+            width: 100%;
+            margin: -30px auto 50px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            align-items: start;
+        }
 
-        .profile-hero { display: flex; gap: 20px; align-items: center; border: 1px solid rgba(255, 170, 0, 0.2); }
-        .avatar-box { width: 100px; height: 100px; background: #000; border-radius: 12px; border: 2px solid #ffaa00; overflow: hidden; box-shadow: 0 0 15px rgba(255, 170, 0, 0.3); }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
+
+        /* ── PROFILE HERO ── */
+        .profile-hero {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .avatar-box {
+            width: 100px; height: 100px;
+            background: var(--bg);
+            border-radius: 16px;
+            border: 2px solid var(--green);
+            overflow: hidden;
+            box-shadow: 0 6px 18px var(--green-glow);
+            flex-shrink: 0;
+        }
         .avatar-box img { width: 100%; height: 100%; image-rendering: pixelated; }
-        .user-details h2 { color: #fff; font-size: 24px; display: flex; align-items: center; gap: 8px; }
-        .badge { background: rgba(255, 170, 0, 0.15); color: #ffaa00; border: 1px solid rgba(255, 170, 0, 0.3); padding: 3px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-top: 6px; display: inline-block; }
-        .kayit-tarihi { font-size: 11px; color: #6b7280; margin-top: 8px; }
+        .user-details h2 {
+            color: var(--text);
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-details h2 i { color: var(--green); font-size: 16px; }
+        .badge {
+            background: var(--green-soft);
+            color: var(--green-dark);
+            border: 1px solid rgba(34,197,94,0.3);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        .kayit-tarihi { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
 
-        .quick-access { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-top: 20px; }
-        .quick-btn.admin-btn { border-color: rgba(239,68,68,0.4); }
-        .quick-btn.admin-btn i { color: #ef4444; }
-        .quick-btn.admin-btn:hover { background: rgba(239,68,68,0.1); border-color: #ef4444; }
-        .quick-btn { background: rgba(18, 24, 38, 0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px 10px; text-align: center; color: #9ca3af; text-decoration: none; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer; display: block; }
-        .quick-btn i { font-size: 20px; color: #ffaa00; display: block; margin-bottom: 8px; }
-        .quick-btn:hover { background: rgba(255, 170, 0, 0.1); border-color: #ffaa00; color: #fff; }
+        /* ── QUICK ACCESS ── */
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+            gap: 10px;
+        }
+        .quick-btn {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 10px;
+            text-align: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.2s;
+            cursor: pointer;
+            display: block;
+        }
+        .quick-btn i { font-size: 20px; color: var(--green); display: block; margin-bottom: 8px; }
+        .quick-btn:hover { background: var(--green-soft); border-color: var(--green); color: var(--green-dark); }
+        .quick-btn.admin-btn { border-color: rgba(239,68,68,0.3); }
+        .quick-btn.admin-btn i { color: var(--danger); }
+        .quick-btn.admin-btn:hover { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
 
-        .btn-join { width: 100%; background: linear-gradient(90deg, #ffaa00, #e68a00); border: none; padding: 12px; border-radius: 8px; color: #000; font-weight: 800; cursor: pointer; margin-top: 10px; font-size: 14px; }
-        .status-line { font-size: 12px; margin-top: 10px; font-weight: 700; }
-        .shop-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        /* ── SIDEBAR ── */
+        .sidebar-card { margin-bottom: 20px; }
+        .join-card { text-align: center; }
+        .join-card h3 { color: var(--text); font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+        .btn-join {
+            width: 100%;
+            background: var(--green);
+            border: none;
+            padding: 13px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px var(--green-glow);
+            transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-join:hover { background: var(--green-dark); transform: translateY(-1px); }
+        .ip-text {
+            font-size: 12px; color: var(--text-muted); margin-top: 10px;
+            font-family: monospace; background: var(--bg); padding: 6px 10px; border-radius: 8px;
+            display: inline-block;
+        }
+        .status-line { font-size: 12.5px; margin-top: 12px; font-weight: 700; }
 
-        /* HESAP SİL MODAL */
+        .shop-title {
+            color: var(--text); font-size: 14px; font-weight: 800; margin-bottom: 14px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .shop-title i { color: var(--green); }
+        .shop-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13.5px;
+        }
+        .shop-item:last-of-type { border-bottom: none; }
+        .shop-item span:first-child { color: var(--text); font-weight: 600; }
+        .shop-item span:last-child { color: var(--green-dark); font-weight: 700; }
+        .shop-link {
+            display: block; text-align: center; margin-top: 14px;
+            color: var(--green-dark); text-decoration: none; font-size: 12.5px; font-weight: 700;
+        }
+        .shop-link:hover { text-decoration: underline; }
+
+        /* ── MODAL ── */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+            background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(6px);
             display: none; justify-content: center; align-items: center; z-index: 1000;
+            padding: 20px;
         }
-        .modal-box { background: #121824; border: 1px solid #ef4444; border-radius: 16px; padding: 30px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); }
-        .modal-box h3 { color: #ef4444; margin-bottom: 10px; font-size: 20px; }
-        .modal-box p { color: #cbd5e1; font-size: 14px; margin-bottom: 15px; }
-        .modal-box input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #334155; border-radius: 8px; background: #0b0e14; color: #fff; }
-        .modal-msg { font-size: 13px; font-weight: 600; margin-bottom: 10px; min-height: 18px; }
-        .modal-btns { display: flex; gap: 15px; justify-content: center; }
-        .btn-yes { background: #ef4444; color: #fff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
-        .btn-no { background: #334155; color: #fff; border: none; padding: 10px 25px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .modal-box.danger { border-top: 4px solid var(--danger); }
+        .modal-box.accent { border-top: 4px solid var(--green); }
+        .modal-box i.modal-icon { font-size: 36px; margin-bottom: 14px; display: block; }
+        .modal-box.danger i.modal-icon { color: var(--danger); }
+        .modal-box.accent i.modal-icon { color: var(--green); }
+        .modal-box h3 { font-size: 19px; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+        .modal-box p { color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
+        .modal-box input {
+            width: 100%; padding: 12px 14px; margin-bottom: 12px;
+            border: 1px solid var(--border); border-radius: 10px;
+            background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; outline: none;
+            transition: border-color 0.2s;
+        }
+        .modal-box input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.12); }
+        .modal-msg { font-size: 13px; font-weight: 600; margin-bottom: 8px; min-height: 18px; }
+        .modal-btns { display: flex; gap: 12px; justify-content: center; margin-top: 6px; }
+        .btn-yes {
+            background: var(--danger); color: #fff; border: none; padding: 11px 24px;
+            border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 13.5px;
+            transition: 0.2s;
+        }
+        .btn-yes:hover { background: #dc2626; }
+        .btn-yes.accent { background: var(--green); }
+        .btn-yes.accent:hover { background: var(--green-dark); }
+        .btn-no {
+            background: var(--bg); color: var(--text-muted); border: 1px solid var(--border);
+            padding: 11px 24px; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 13.5px;
+            transition: 0.2s;
+        }
+        .btn-no:hover { background: var(--border); }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark);
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px;
+            font-size: 12.5px;
+            margin-top: auto;
+        }
+        footer a { color: var(--green); text-decoration: none; }
+
+        @media (max-width: 860px) {
+            .main { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 640px) {
+            .nav-links a span { display: none; }
+            .profile-hero { flex-direction: column; text-align: center; }
+        }
     </style>
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo"><i class="fa-solid fa-star"></i> TEKYILDIZMC</div>
-        <ul class="nav-links">
-            <li><a href="/anasayfa.html">ANA SAYFA</a></li>
-            <li><a href="/magaza.html">MAĞAZA</a></li>
-            <li><a href="/siralamalar.html">SIRALAMALAR</a></li>
-            <li><a href="/destek.html">DESTEK</a></li>
-            <li><a href="/profil.html" class="active">PROFİL</a></li>
-        </ul>
-        <div class="nav-user">
-            <img id="navAvatar" src="https://mc-heads.net/avatar/Steve/32" alt="Skin">
-            <span id="navUsername" style="font-size: 13px; font-weight: 700; color: #fff;">Yükleniyor...</span>
+    <div class="top-bar">
+        <div class="top-inner">
+            <a href="anasayfa.html" class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+                <div><span>Şehzade</span>MC</div>
+            </a>
+            <div class="nav-links">
+                <a href="anasayfa.html"><i class="fa-solid fa-house"></i> <span>Anasayfa</span></a>
+                <a href="magaza.html"><i class="fa-solid fa-shop"></i> <span>Mağaza</span></a>
+                <a href="siralamalar.html"><i class="fa-solid fa-trophy"></i> <span>Sıralamalar</span></a>
+                <a href="destek.html"><i class="fa-solid fa-headset"></i> <span>Destek</span></a>
+                <a href="profil.html" class="active"><i class="fa-solid fa-user"></i> <span>Profil</span></a>
+            </div>
+            <div class="nav-user">
+                <img id="navAvatar" src="https://mc-heads.net/avatar/Steve/30" alt="Skin">
+                <span id="navUsername">Yükleniyor...</span>
+            </div>
         </div>
-    </nav>
+    </div>
 
-    <div class="container">
+    <div class="main">
         <div class="main-content">
             <div class="card profile-hero">
-                <div class="avatar-box" id="avatarBox" style="width:110px; height:110px;">
+                <div class="avatar-box" id="avatarBox">
                     <img id="heroAvatar" src="https://mc-heads.net/avatar/Steve/100" alt="Avatar">
                 </div>
                 <div class="user-details">
-                    <h2><span id="heroUsername">Yükleniyor...</span> <i class="fa-solid fa-circle-check" style="color: #ffaa00; font-size: 16px;"></i></h2>
-                    <span class="badge" id="rutbeBadge">TekYıldızMC Oyuncusu</span>
-                    <span class="badge" id="puanBadge" style="display:none; margin-left:6px; color:#10b981; border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.1);"></span>
+                    <h2><span id="heroUsername">Yükleniyor...</span> <i class="fa-solid fa-circle-check"></i></h2>
+                    <span class="badge" id="rutbeBadge">ŞehzadeMC Oyuncusu</span>
+                    <span class="badge" id="puanBadge" style="display:none; margin-left:6px;"></span>
                     <div class="kayit-tarihi" id="rutbeBitisNotu"></div>
                     <div class="kayit-tarihi" id="oturumBilgisi">Oturum kontrol ediliyor...</div>
                 </div>
             </div>
 
-            <div class="quick-access">
-                <a href="/magaza.html" class="quick-btn"><i class="fa-solid fa-shop"></i> MAĞAZA</a>
-                <a href="/destek.html" class="quick-btn"><i class="fa-solid fa-life-ring"></i> DESTEK</a>
-                <div class="quick-btn" onclick="ipKopyala()"><i class="fa-solid fa-server"></i> IP KOPYALA</div>
-                <div class="quick-btn" onclick="sifreModalAc()"><i class="fa-solid fa-key"></i> ŞİFRE DEĞİŞTİR</div>
-                <div class="quick-btn" onclick="adModalAc()"><i class="fa-solid fa-user-pen"></i> KULLANICI ADI</div>
-                <div class="quick-btn" onclick="cikisYap()"><i class="fa-solid fa-right-from-bracket" style="color:#ffaa00;"></i> ÇIKIŞ YAP</div>
-                <div class="quick-btn" onclick="hesapSilModalAc()"><i class="fa-solid fa-user-slash" style="color:#ef4444;"></i> HESABI SİL</div>
-                <a href="/admin.html" class="quick-btn admin-btn" id="adminBtn" style="display:none;"><i class="fa-solid fa-shield-halved"></i> YÖNETİM PANELİ</a>
+            <div class="card">
+                <div class="quick-access">
+                    <a href="magaza.html" class="quick-btn"><i class="fa-solid fa-shop"></i> MAĞAZA</a>
+                    <a href="destek.html" class="quick-btn"><i class="fa-solid fa-life-ring"></i> DESTEK</a>
+                    <div class="quick-btn" onclick="ipKopyala()"><i class="fa-solid fa-server"></i> IP KOPYALA</div>
+                    <div class="quick-btn" onclick="sifreModalAc()"><i class="fa-solid fa-key"></i> ŞİFRE DEĞİŞTİR</div>
+                    <div class="quick-btn" onclick="adModalAc()"><i class="fa-solid fa-user-pen"></i> KULLANICI ADI</div>
+                    <div class="quick-btn" onclick="cikisYap()"><i class="fa-solid fa-right-from-bracket"></i> ÇIKIŞ YAP</div>
+                    <div class="quick-btn" onclick="hesapSilModalAc()"><i class="fa-solid fa-user-slash" style="color:var(--danger);"></i> HESABI SİL</div>
+                    <a href="admin.html" class="quick-btn admin-btn" id="adminBtn" style="display:none;"><i class="fa-solid fa-shield-halved"></i> YÖNETİM PANELİ</a>
+                </div>
             </div>
         </div>
 
         <div class="sidebar">
-            <div class="card" style="margin-bottom: 20px; text-align: center;">
-                <h3 style="color: #fff; font-size: 16px;">SUNUCUYA KATIL</h3>
-                <button class="btn-join" onclick="ipKopyala()"><i class="fa-solid fa-play"></i> IP'Yİ KOPYALA</button>
-                <div style="font-size: 11px; color: #6b7280; margin-top: 8px; font-family: monospace;">tekyildizmc.aternos.me:47034</div>
+            <div class="card sidebar-card join-card">
+                <h3><i class="fa-solid fa-gamepad" style="color:var(--green); margin-right:6px;"></i>SUNUCUYA KATIL</h3>
+                <button class="btn-join" onclick="ipKopyala()"><i class="fa-solid fa-copy"></i> IP'Yİ KOPYALA</button>
+                <div class="ip-text" id="ipText">tekyildizmc.aternos.me:47034</div>
                 <div class="status-line" id="statusLine">Sunucu durumu kontrol ediliyor...</div>
             </div>
 
-            <div class="card" id="magaza">
-                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-store" style="color: #ffaa00;"></i> MAĞAZA'DAN ÖNE ÇIKANLAR</h4>
-                <div class="shop-item"><span style="color:#fff;">VIP Rütbesi</span><span style="color:#10b981; font-weight:700;">500 Kredi</span></div>
-                <div class="shop-item"><span style="color:#fff;">VIP+ Rütbesi</span><span style="color:#10b981; font-weight:700;">900 Kredi</span></div>
-                <div class="shop-item"><span style="color:#fff;">MVIP Rütbesi</span><span style="color:#10b981; font-weight:700;">1500 Kredi</span></div>
-                <a href="/magaza.html" style="display:block; text-align:center; margin-top:12px; color:#ffaa00; text-decoration:none; font-size:12px; font-weight:700;">Tüm Mağazayı Gör &rarr;</a>
+            <div class="card sidebar-card">
+                <div class="shop-title"><i class="fa-solid fa-store"></i> MAĞAZA'DAN ÖNE ÇIKANLAR</div>
+                <div class="shop-item"><span>VIP Rütbesi</span><span>500 Kredi</span></div>
+                <div class="shop-item"><span>VIP+ Rütbesi</span><span>900 Kredi</span></div>
+                <div class="shop-item"><span>MVIP Rütbesi</span><span>1500 Kredi</span></div>
+                <a href="magaza.html" class="shop-link">Tüm Mağazayı Gör &rarr;</a>
             </div>
         </div>
     </div>
 
     <!-- HESAP SİL ONAY PENCERESİ -->
     <div class="modal-overlay" id="hesapSilModal">
-        <div class="modal-box">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 40px; color: #ef4444; margin-bottom: 15px;"></i>
+        <div class="modal-box danger">
+            <i class="fa-solid fa-triangle-exclamation modal-icon"></i>
             <h3>Hesabını Silmek İstiyor Musun?</h3>
             <p>Bu işlem geri alınamaz. Onaylamak için şifreni gir:</p>
             <input type="password" id="silSifre" placeholder="Şifren">
@@ -148,16 +396,16 @@
 
     <!-- SIFRE DEGISTIR PENCERESI -->
     <div class="modal-overlay" id="sifreModal">
-        <div class="modal-box" style="border-color: #ffaa00; box-shadow: 0 0 30px rgba(255,170,0,0.25);">
-            <i class="fa-solid fa-key" style="font-size: 34px; color: #ffaa00; margin-bottom: 15px;"></i>
-            <h3 style="color:#ffaa00;">Şifre Değiştir</h3>
+        <div class="modal-box accent">
+            <i class="fa-solid fa-key modal-icon"></i>
+            <h3>Şifre Değiştir</h3>
             <p>Mevcut şifreni ve yeni şifreni gir.</p>
             <input type="password" id="mevcutSifre" placeholder="Mevcut şifren">
             <input type="password" id="yeniSifre1" placeholder="Yeni şifre (en az 6 karakter)">
             <input type="password" id="yeniSifre2" placeholder="Yeni şifre (tekrar)">
             <div class="modal-msg" id="sifreMesaj"></div>
             <div class="modal-btns">
-                <button class="btn-yes" id="btnSifreKaydet" style="background:#ffaa00; color:#000;">GÜNCELLE</button>
+                <button class="btn-yes accent" id="btnSifreKaydet">GÜNCELLE</button>
                 <button class="btn-no" onclick="sifreModalKapat()">KAPAT</button>
             </div>
         </div>
@@ -165,19 +413,24 @@
 
     <!-- KULLANICI ADI DEGISTIR PENCERESI -->
     <div class="modal-overlay" id="adModal">
-        <div class="modal-box" style="border-color: #ffaa00; box-shadow: 0 0 30px rgba(255,170,0,0.25);">
-            <i class="fa-solid fa-user-pen" style="font-size: 34px; color: #ffaa00; margin-bottom: 15px;"></i>
-            <h3 style="color:#ffaa00;">Kullanıcı Adını Değiştir</h3>
+        <div class="modal-box accent">
+            <i class="fa-solid fa-user-pen modal-icon"></i>
+            <h3>Kullanıcı Adını Değiştir</h3>
             <p>Yeni kullanıcı adını ve mevcut şifreni gir (geçmiş destek/sipariş kayıtların da otomatik güncellenir).</p>
             <input type="text" id="yeniAd" placeholder="Yeni kullanıcı adı (3-16 karakter)" maxlength="16">
             <input type="password" id="adSifre" placeholder="Mevcut şifren">
             <div class="modal-msg" id="adMesaj"></div>
             <div class="modal-btns">
-                <button class="btn-yes" id="btnAdKaydet" style="background:#ffaa00; color:#000;">DEĞİŞTİR</button>
+                <button class="btn-yes accent" id="btnAdKaydet">DEĞİŞTİR</button>
                 <button class="btn-no" onclick="adModalKapat()">KAPAT</button>
             </div>
         </div>
     </div>
+
+    <footer>
+        &copy; 2026 ŞehzadeMC — Tüm hakları saklıdır.
+        · <a href="anasayfa.html">Anasayfa</a>
+    </footer>
 
     <script>
         const ATERNOS_IP = "tekyildizmc.aternos.me";
@@ -195,7 +448,7 @@
                 box.style.height = '160px';
                 const viewer = new skinview3d.SkinViewer({
                     canvas: document.getElementById('skinCanvas'),
-                    width: 110,
+                    width: 100,
                     height: 160,
                     skin: `https://mc-heads.net/skin/${kullaniciAdi}`
                 });
@@ -219,7 +472,7 @@
                 aktifKullaniciAdi = kullaniciAdi;
                 document.getElementById('navUsername').innerText = kullaniciAdi;
                 document.getElementById('heroUsername').innerText = kullaniciAdi;
-                document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${kullaniciAdi}/32`;
+                document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${kullaniciAdi}/30`;
                 document.getElementById('heroAvatar').src = `https://mc-heads.net/avatar/${kullaniciAdi}/100`;
                 document.getElementById('oturumBilgisi').innerText = 'Oturum güvenli şekilde açık.';
                 skinGoster(kullaniciAdi);
@@ -235,7 +488,7 @@
                             if (p.basarili) {
                                 const rutbe = p.veri.rutbe;
                                 if (data.kullanici.rol !== 'moderator') {
-                                    document.getElementById('rutbeBadge').innerText = (rutbe && rutbe !== 'Yok') ? rutbe + ' Üyesi' : 'TekYıldızMC Oyuncusu';
+                                    document.getElementById('rutbeBadge').innerText = (rutbe && rutbe !== 'Yok') ? rutbe + ' Üyesi' : 'ŞehzadeMC Oyuncusu';
                                 }
                                 if (rutbe && rutbe !== 'Yok' && p.veri.rutbe_bitis) {
                                     document.getElementById('rutbeBitisNotu').innerText =
@@ -343,7 +596,7 @@
             })
             .then(res => res.json())
             .then(data => {
-                mesajDiv.style.color = data.basarili ? '#4ecca3' : '#ef4444';
+                mesajDiv.style.color = data.basarili ? '#16a34a' : '#ef4444';
                 mesajDiv.innerText = data.mesaj;
                 if (data.basarili) {
                     document.getElementById('mevcutSifre').value = '';
@@ -385,13 +638,13 @@
             })
             .then(res => res.json())
             .then(data => {
-                mesajDiv.style.color = data.basarili ? '#4ecca3' : '#ef4444';
+                mesajDiv.style.color = data.basarili ? '#16a34a' : '#ef4444';
                 mesajDiv.innerText = data.mesaj;
                 if (data.basarili) {
                     aktifKullaniciAdi = data.yeniKullaniciAdi;
                     document.getElementById('navUsername').innerText = aktifKullaniciAdi;
                     document.getElementById('heroUsername').innerText = aktifKullaniciAdi;
-                    document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${aktifKullaniciAdi}/32`;
+                    document.getElementById('navAvatar').src = `https://mc-heads.net/avatar/${aktifKullaniciAdi}/30`;
                     document.getElementById('heroAvatar').src = `https://mc-heads.net/avatar/${aktifKullaniciAdi}/100`;
                     skinGoster(aktifKullaniciAdi);
                     document.getElementById('adSifre').value = '';
@@ -410,12 +663,12 @@
                 const response = await fetch(`https://api.mcsrvstat.us/2/${ATERNOS_IP}:${ATERNOS_PORT}`);
                 const data = await response.json();
                 if (data.online) {
-                    statusLine.innerHTML = `<span style="color:#10b981;">● ÇEVRİMİÇİ</span> — ${data.players ? data.players.online : 0}/${data.players ? data.players.max : '?'} oyuncu`;
+                    statusLine.innerHTML = `<span style="color:#16a34a;">● ÇEVRİMİÇİ</span> — ${data.players ? data.players.online : 0}/${data.players ? data.players.max : '?'} oyuncu`;
                 } else {
-                    statusLine.innerHTML = `<span style="color:#ef4444;">● KAPALI</span> — Aternos sunucusu şu an offline`;
+                    statusLine.innerHTML = `<span style="color:#ef4444;">● KAPALI</span> — Sunucu şu an offline`;
                 }
             } catch (e) {
-                statusLine.innerHTML = `<span style="color:#6b7280;">Sunucu durumu alınamadı</span>`;
+                statusLine.innerHTML = `<span style="color:#94a3b8;">Sunucu durumu alınamadı</span>`;
             }
         }
         checkServerStatus();
